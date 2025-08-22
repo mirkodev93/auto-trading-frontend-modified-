@@ -11,10 +11,14 @@ function App() {
 
   return (
     <>
-      <Chart />
-      <Balance price={price} setPrice={setPrice} />
-      <Rules rules={rules} setRules={setRules} />
-      <History />
+      <div className="chart-pane">
+        <Chart className="chart-box" />
+        <History />
+      </div>
+      <div className="right-panel">
+        <Balance price={price} setPrice={setPrice} />
+        <Rules rules={rules} setRules={setRules} />
+      </div>
     </>
   );
 }
