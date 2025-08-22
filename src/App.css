@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom right, #1a1f2c, #2d3446);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.chart-box {
+  /* Scales gracefully: never too tiny, never too huge */
+  width: clamp(520px, 45vw, 1100px);
+  height: clamp(320px, 80vh, 900px);
+
+  border-radius: 18px;
+  overflow: hidden;
+
+  /* glassy premium look */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.40);
+  backdrop-filter: blur(10px);
+
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  margin-bottom: 16px;
+
+  /* Chart Panel */
+  vertical-align: center;
+  left: 0;
+  top: 0;
+  width: 45vw;
+  /* left half */
+  height: 70vh;
+  box-sizing: border-box;
+
+  /* Center the chart horizontally & vertically */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px 14px;
+
+  /* subtle ambient glow to match right panel vibe */
+  background:
+    radial-gradient(1200px 600px at 18% 12%, rgba(124, 58, 237, 0.09), transparent 60%),
+    radial-gradient(900px 420px at 28% 78%, rgba(6, 182, 212, 0.07), transparent 60%);
+}
+
+.chart-box>* {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
