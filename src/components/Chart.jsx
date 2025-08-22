@@ -6,20 +6,20 @@ import '../App.css';
  * cross-origin errors won't bubble into React dev overlay.
  */
 function TradingViewWidget() {
-    const iframeRef = useRef(null);
+  const iframeRef = useRef(null);
 
-    useEffect(() => {
-        const iframe = iframeRef.current;
-        if (!iframe) return;
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!iframe) return;
 
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.setAttribute('frameBorder', '0');
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.setAttribute('frameBorder', '0');
 
-        const doc = iframe.contentDocument || iframe.contentWindow?.document;
-        if (!doc) return;
+    const doc = iframe.contentDocument || iframe.contentWindow?.document;
+    if (!doc) return;
 
-        const widgetConfig = `
+    const widgetConfig = `
       {
         "allow_symbol_change": true,
         "calendar": false,
@@ -46,7 +46,7 @@ function TradingViewWidget() {
       }
     `.trim();
 
-        const html = `
+    const html = `
       <!doctype html>
       <html>
         <head>
@@ -68,31 +68,31 @@ function TradingViewWidget() {
       </html>
     `;
 
-        doc.open();
-        doc.write(html);
-        doc.close();
+    doc.open();
+    doc.write(html);
+    doc.close();
 
-        return () => {
-            try {
-                const d = iframe.contentDocument || iframe.contentWindow?.document;
-                if (d) {
-                    d.open();
-                    d.write('<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#0F0F0F"></body></html>');
-                    d.close();
-                }
-            } catch { }
-        };
-    }, []);
+    return () => {
+      try {
+        const d = iframe.contentDocument || iframe.contentWindow?.document;
+        if (d) {
+          d.open();
+          d.write('<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#0F0F0F"></body></html>');
+          d.close();
+        }
+      } catch { }
+    };
+  }, []);
 
-    return (
-        <div className="chart-box">
-            <iframe
-                ref={iframeRef}
-                title="TradingView SOLUSDT"
-                style={{ width: '100%', height: '100%', display: 'block' }}
-            />
-        </div>
-    );
+  return (
+    <div className="chart-box">
+      <iframe
+        ref={iframeRef}
+        title="TradingView SOLUSDT"
+        style={{ width: '100%', height: '100%', display: 'block' }}
+      />
+    </div>
+  );
 }
 
 export default memo(TradingViewWidget);
