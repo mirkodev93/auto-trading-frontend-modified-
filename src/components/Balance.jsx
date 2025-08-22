@@ -95,9 +95,7 @@ function Balance({ price, setPrice }) {
     useEffect(() => {
         (async () => {
             try {
-                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 const res = await getBalances();
-                console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
                 setBalanceArr(res);
             } catch (error) {
                 console.error("Error fetching balances:", error);
@@ -105,9 +103,7 @@ function Balance({ price, setPrice }) {
         })();
     }, []);
 
-    // console.log("balanceArr=====>>>>>", balanceArr);
     const total = price * balanceArr[2]?.value + balanceArr[3]?.value;
-    // console.log("total=====>>>>>", total);
 
     return (
         <div className="balance-panel fancy-card">
