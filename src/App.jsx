@@ -13,7 +13,7 @@ function App() {
     <>
       <div className="chart-pane">
         <Chart className="chart-box" />
-        <History />
+        <History className="automation-content" />
       </div>
       <div className="right-panel">
         <Balance price={price} setPrice={setPrice} />

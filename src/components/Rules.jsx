@@ -8,7 +8,6 @@ function Rules({ rules, setRules }) {
         (async () => {
             try {
                 const fetchedRules = await getRules();
-                console.log("==========================>>>>>>>>>>>>>>>>>>>>>>>", fetchedRules);
                 setRules(fetchedRules);
             } catch (error) {
                 console.error("Error fetching rules:", error);
@@ -37,7 +36,6 @@ function Rules({ rules, setRules }) {
     const saveRule = () => {
         (async () => {
             try {
-                console.log("=======>>>>>>>>>", rules);
                 const _rules = rules;
                 await clearRules();
                 _rules.map(async (r) => {

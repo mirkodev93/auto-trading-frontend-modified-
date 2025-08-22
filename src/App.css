@@ -81,7 +81,7 @@ body {
 }
 
 .trade-history {
-  margin: 20px 0;
+  width: 95%;
 }
 
 .trade-history h4 {
@@ -203,6 +203,7 @@ body {
 }
 
 .automation-content {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;
