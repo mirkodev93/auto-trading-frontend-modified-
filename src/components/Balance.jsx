@@ -3,8 +3,7 @@ import "../lib/api"
 import '../App.css';
 import { getBalances } from '../lib/api';
 
-function Balance({ price, setPrice }) {
-    const [balanceArr, setBalanceArr] = useState([]);
+function Balance({ price, setPrice, balanceArr, setBalanceArr }) {
 
     const wsRef = useRef(null);
     const pingRef = useRef(null);
@@ -121,7 +120,7 @@ function Balance({ price, setPrice }) {
                 {
                     balanceArr.map((b) => {
                         return <div className="balance-chip">
-                            <span className="chip-value">{b.value}</span>
+                            <span className="chip-value">{b.value.toFixed(2)}</span>
                             <div className="balance-col-title">{b.token}</div>
                         </div>
                     })

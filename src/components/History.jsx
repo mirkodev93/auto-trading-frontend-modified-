@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import { getHistories } from '../lib/api';
 import "../App.css";
 
-function History() {
-    const [histories, setHistories] = useState([]);
+function History({ histories, setHistories }) {
     useEffect(() => {
         const fetchData = async () => {
             const data = await getHistories();
@@ -22,7 +21,7 @@ function History() {
                         <div className="trade-entry" key={index}>
                             <div className="trade-time">{entry.time}</div>
                             {
-                                entry.swapmode ? <div className="trade-action">Swapped {Math.abs(entry.changed_sol).toFixed(2)} SOL to {Math.abs(entry.changed_usdt).toFixed(2)} USDT at {entry.changed_price.toFixed(2)}, current balance: {entry.balance[2].value.toFixed(2)} SOL, {entry.balance[3].value.toFixed(2)} USDT, total: {entry.total.toFixed(2)}</div> : <div className="trade-action">Swapped {Math.abs(entry.changed_usdt).toFixed(2)} USDT to {Math.abs(entry.changed_sol).toFixed(2)} SOL at {entry.changed_price.toFixed(2)}, current balance: {entry.balance[2].value.toFixed(2)} SOL, {entry.balance[3].value.toFixed(2)} USDT, total: {entry.total.toFixed(2)}</div>
+                                entry.swapmode ? <div className="trade-action">Swapped {Math.abs(entry.changed_usdt).toFixed(2)} USDT to {Math.abs(entry.changed_sol).toFixed(2)} SOL at {entry.changed_price.toFixed(2)}, current balance: {entry.balance[2].value.toFixed(2)} SOL, {entry.balance[3].value.toFixed(2)} USDT, total: {entry.total.toFixed(2)}, fee: {entry.fee.toFixed(2)}</div> : <div className="trade-action">Swapped {Math.abs(entry.changed_sol).toFixed(2)} SOL to {Math.abs(entry.changed_usdt).toFixed(2)} USDT at {entry.changed_price.toFixed(2)}, current balance: {entry.balance[2].value.toFixed(2)} SOL, {entry.balance[3].value.toFixed(2)} USDT, total: {entry.total.toFixed(2)}, fee: {entry.fee.toFixed(2)} </div>
                             }
                         </div>
                     ))}
