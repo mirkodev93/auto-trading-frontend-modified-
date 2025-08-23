@@ -16,12 +16,14 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setPrevPrice(price);
-    }, 1000);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [price]);
 
   useEffect(() => {
+    if (prevPrice == 0)
+      return;
     for (const r of rules) {
       const sp = parseFloat(r.setpoint);
       if ((prevPrice > sp && price <= sp && price !== prevPrice) || (prevPrice < sp && price >= sp && price !== prevPrice)) {
