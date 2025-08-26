@@ -5,7 +5,7 @@ import '../App.css';
  * TradingView Advanced Chart embedded in its own iframe so
  * cross-origin errors won't bubble into React dev overlay.
  */
-function TradingViewWidget() {
+function TradingViewWidget({ selectedToken = "sol" }) {
   const iframeRef = useRef(null);
 
   useEffect(() => {
@@ -18,6 +18,8 @@ function TradingViewWidget() {
 
     const doc = iframe.contentDocument || iframe.contentWindow?.document;
     if (!doc) return;
+
+    const symbol = `MEXC:${selectedToken.toUpperCase()}USDT`;
 
     const widgetConfig = `
       {
@@ -33,7 +35,7 @@ function TradingViewWidget() {
         "locale": "en",
         "save_image": true,
         "style": "1",
-        "symbol": "MEXC:SOLUSDT",
+        "symbol": "${symbol}",
         "theme": "dark",
         "timezone": "Asia/Tokyo",
         "backgroundColor": "#0F0F0F",
@@ -82,7 +84,7 @@ function TradingViewWidget() {
         }
       } catch { }
     };
-  }, []);
+  }, [selectedToken]);
 
   return (
     <div className="chart-box">
