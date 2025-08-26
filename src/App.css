@@ -1825,11 +1825,105 @@ body {
   padding: 12px 14px !important;
   box-sizing: border-box;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,.2) transparent;
+  scrollbar-color: rgba(255, 255, 255, .2) transparent;
   /* no background here */
 }
 
-.rules-scroll::-webkit-scrollbar { width: 6px; }
-.rules-scroll::-webkit-scrollbar-track { background: transparent; }
-.rules-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 3px; }
-.rules-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.3); }
+.rules-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.rules-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.rules-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, .2);
+  border-radius: 3px;
+}
+
+.rules-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, .3);
+}
+
+/* Token bar layout: clean + balanced */
+.token-form {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* push select + button to the right */
+  gap: 12px;
+
+  width: 100%;
+  /* take full row width of right-panel */
+  padding-right: 16px;
+  /* breathing room so Save isn’t clipped */
+
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+
+/* Keep select compact but elegant */
+.token-form .form-group {
+  margin: 0;
+  flex: 1;
+}
+
+/* Token select: glassy style with ▼ arrow */
+.token-form .form-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  flex: 1;
+  min-width: 180px;
+  padding: 10px 40px 10px 14px;
+
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(15, 15, 15, 0.85);
+  /* solid dark background */
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+
+  /* ▼ arrow */
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='18' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M3 6l6 6 6-6z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  /* centered vertically */
+  background-size: 18px;
+}
+
+.token-form .form-input:focus {
+  outline: none;
+  border-color: rgba(124, 58, 237, 0.6);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+}
+
+/* Beautiful Save button */
+.token-form .save-btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(34, 197, 94, 0.3);
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.token-form .save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(34, 197, 94, 0.4);
+}
+
+.token-form .save-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+}

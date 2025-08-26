@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 
-function Token({ selectedToken = "sol", setSelectedToken }) {
+function Token({ selectedToken = "sol", setSelectedToken, onSave }) {
     const handleChange = (e) => {
         setSelectedToken?.(e.target.value);
     };
@@ -21,6 +21,10 @@ function Token({ selectedToken = "sol", setSelectedToken }) {
                         <option value={"xrp"}>XRP</option>
                     </select>
                 </div>
+
+                <button className="save-btn" onClick={onSave}>
+                    Save
+                </button>
             </div>
         </>
     );

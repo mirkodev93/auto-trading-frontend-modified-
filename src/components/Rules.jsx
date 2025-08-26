@@ -112,9 +112,6 @@ function Rules({ rules, setRules }) {
         <button className="add-button gradient" onClick={addRule}>
           + Add Rule
         </button>
-        <button className="set-button primary" onClick={saveRule}>
-          Save
-        </button>
       </div>
     </div>
   );

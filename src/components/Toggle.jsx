@@ -1,9 +1,7 @@
 import { useState } from "react";
 import "../App.css";
 
-export default function Toggle() {
-  const [enabled, setEnabled] = useState(false);
-
+export default function Toggle({ isFuture, setIsFuture }) {
   return (
     <div
       style={{
@@ -16,11 +14,11 @@ export default function Toggle() {
     >
       {/* Toggle switch */}
       <div
-        onClick={() => setEnabled(!enabled)}
+        onClick={() => setIsFuture(!isFuture)}
         style={{
           width: "60px",
           height: "30px",
-          background: enabled ? "#4ade80" : "#d1d5db", // green / gray
+          background: isFuture ? "#aaffff" : "#4ade80",
           borderRadius: "9999px",
           position: "relative",
           cursor: "pointer",
@@ -32,7 +30,7 @@ export default function Toggle() {
           style={{
             position: "absolute",
             top: "3px",
-            left: enabled ? "32px" : "3px",
+            left: isFuture ? "32px" : "3px",
             width: "24px",
             height: "24px",
             borderRadius: "50%",
@@ -53,7 +51,7 @@ export default function Toggle() {
           userSelect: "none",
         }}
       >
-        Future / Spot
+        Spot / Future
       </span>
     </div>
   );

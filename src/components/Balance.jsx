@@ -4,7 +4,14 @@ import { getBalances } from '../lib/api';
 
 function Balance({ price, setPrice, balanceArr, setBalanceArr, selectedToken = "sol" }) {
     useEffect(() => {
-        setPrice(100);
+        const ws = new WebSocket("ws://localhost:4000");
+        ws.onmessage = (event) => {
+            try {
+                const msg = JSON.parse(event.data);
+                if (msg.type === "price") setPrice(Number(msg.price));
+            } catch { }
+        };
+        return () => ws.close();
     }, []);
 
     useEffect(() => {
@@ -18,12 +25,19 @@ function Balance({ price, setPrice, balanceArr, setBalanceArr, selectedToken = "
         })();
     }, []);
 
-    const total = price * balanceArr[2]?.value + balanceArr[3]?.value;
+    // Balance.jsx (replace the total calc + keep everything else)
+    const solItem = balanceArr.find(b => String(b?.token).toLowerCase() === selectedToken.toLowerCase());
+    const usdtItem = balanceArr.find(b => String(b?.token).toLowerCase() === "usdt");
+
+    const sol = Number(solItem?.value) || 0;
+    const usdt = Number(usdtItem?.value) || 0;
+    const px = Number(price) || 0;
+
+    const total = sol * px + usdt;
     const wanted = new Set([selectedToken?.toLowerCase(), 'usdt']);
     const visibleBalances = balanceArr.filter(
         (b) => b && wanted.has(String(b.token).toLowerCase())
     ).sort((a, b) => {
-        // ensure selected token appears before usdt
         const aKey = String(a.token).toLowerCase();
         const bKey = String(b.token).toLowerCase();
         if (aKey === selectedToken && bKey === 'usdt') return -1;
