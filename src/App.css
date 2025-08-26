@@ -1817,3 +1817,19 @@ body {
     left: calc((100vw - 94vw) / 2 + var(--toggle-pad)) !important;
   }
 }
+
+.rules-scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px 14px !important;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.2) transparent;
+  /* no background here */
+}
+
+.rules-scroll::-webkit-scrollbar { width: 6px; }
+.rules-scroll::-webkit-scrollbar-track { background: transparent; }
+.rules-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.2); border-radius: 3px; }
+.rules-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.3); }
