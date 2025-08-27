@@ -1,19 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import "../App.css";
-import { getRules, createRule, clearRules } from "../lib/api.js";
 
 function Rules({ rules, setRules }) {
-  useEffect(() => {
-    (async () => {
-      try {
-        const fetchedRules = await getRules();
-        setRules(fetchedRules);
-      } catch (error) {
-        console.error("Error fetching rules:", error);
-      }
-    })();
-  }, [setRules]);
-
   const addRule = () => {
     const newRule = {
       id: (rules.at(-1)?.id ?? 0) + 1,
@@ -30,20 +18,6 @@ function Rules({ rules, setRules }) {
 
   const handleChange = (id, field, value) => {
     setRules(rules.map(rule => (rule.id === id ? { ...rule, [field]: value } : rule)));
-  };
-
-  const saveRule = () => {
-    (async () => {
-      try {
-        const _rules = rules;
-        await clearRules();
-        for (const r of _rules) {
-          await createRule(r);
-        }
-      } catch (error) {
-        console.error("Error saving rules:", error);
-      }
-    })();
   };
 
   return (

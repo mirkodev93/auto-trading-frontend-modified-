@@ -1,19 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import '../App.css';
 import { getBalances } from '../lib/api';
 
 function Balance({ price, setPrice, balanceArr, setBalanceArr, selectedToken = "sol" }) {
-    useEffect(() => {
-        const ws = new WebSocket("ws://localhost:4000");
-        ws.onmessage = (event) => {
-            try {
-                const msg = JSON.parse(event.data);
-                if (msg.type === "price") setPrice(Number(msg.price));
-            } catch { }
-        };
-        return () => ws.close();
-    }, []);
-
     useEffect(() => {
         (async () => {
             try {
@@ -25,7 +14,6 @@ function Balance({ price, setPrice, balanceArr, setBalanceArr, selectedToken = "
         })();
     }, []);
 
-    // Balance.jsx (replace the total calc + keep everything else)
     const solItem = balanceArr.find(b => String(b?.token).toLowerCase() === selectedToken.toLowerCase());
     const usdtItem = balanceArr.find(b => String(b?.token).toLowerCase() === "usdt");
 

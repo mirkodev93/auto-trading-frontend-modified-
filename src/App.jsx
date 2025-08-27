@@ -22,7 +22,7 @@ function App() {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:4000"); // change port if needed
+    const ws = new WebSocket("ws://localhost:4000");
 
     ws.onopen = () => {
       console.log("Connected to backend WebSocket");
@@ -31,7 +31,6 @@ function App() {
     ws.onmessage = (event) => {
       try {
         const msg = JSON.parse(event.data);
-        console.log("WS message:", msg);
 
         if (msg.type === "price") {
           setPrice(msg.price);
@@ -53,43 +52,90 @@ function App() {
     return () => ws.close();
   }, []);
 
-  async function sendConfig(signal) {
-    const payload = {
-      future: isFuture,
-      token: selectedToken,
-      autoTrading: isAuto,
-      settings: {
-        rules,
-        minPrice,
-        maxPrice,
-        time
-      }
-    };
-
-    const res = await fetch("/api/trading/config", {
+  async function sendConfig(payload) {
+    const res = await fetch(`http://localhost:4000/api/trading/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
-      signal,
-      credentials: "include",
     });
 
     if (!res.ok) {
       const text = await res.text().catch(() => "");
       throw new Error(`Save failed: ${res.status} ${text}`);
     }
+    return res.json();
   }
 
   const handleSave = async () => {
+    const settingsObj = {
+      future: !!isFuture,
+      token: String(selectedToken ?? "sol"),
+      autoTrading: !!isAuto,
+      rules: isAuto ? [] : (Array.isArray(rules) ? rules : []),
+      minPrice: isAuto ? Number(minPrice) || 0 : 0,
+      maxPrice: isAuto ? Number(maxPrice) || 0 : 0,
+      time: isAuto ? Number(time) || 0 : 0,
+    };
+    const payload = { settings: JSON.stringify(settingsObj) };
     try {
-      await sendConfig();
+      await sendConfig(payload);
       console.log("Saved");
     } catch (e) {
       console.error(e);
     }
   };
+
+  async function getSettings() {
+    try {
+      const res = await fetch(`http://localhost:4000/api/trading`, { cache: "no-store" });
+      const text = await res.text(); // read body first so we can surface errors
+      if (!res.ok) {
+        throw new Error(`GET /api/trading failed: ${res.status} ${text}`);
+      }
+      return JSON.parse(text);
+    } catch (e) {
+      console.error("getSettings failed:", e);
+      throw e;
+    }
+  }
+
+  function parseSettingsResponse(data) {
+    if (Array.isArray(data)) {
+      const latest = data[data.length - 1];
+      const raw = latest?.settings ?? latest;
+      if (typeof raw === "string") {
+        try { return JSON.parse(raw); } catch { return {}; }
+      }
+      if (typeof raw === "object" && raw !== null) return raw;
+      return {};
+    }
+    if (data && typeof data === "object" && "settings" in data) {
+      const raw = data.settings;
+      if (typeof raw === "string") {
+        try { return JSON.parse(raw); } catch { return {}; }
+      }
+      if (typeof raw === "object" && raw !== null) return raw;
+      return {};
+    }
+    return (typeof data === "object" && data) ? data : {};
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getSettings();
+      const s = parseSettingsResponse(data);
+      setIsFuture(!!s.future);
+      setSelectedToken(s.token ?? "sol");
+      setIsAuto(!!s.autoTrading);
+      setRules(Array.isArray(s.rules) ? s.rules : []);
+      setMinPrice(Number(s.minPrice) || 0);
+      setMaxPrice(Number(s.maxPrice) || 0);
+      setTime(Number(s.time) || 0);
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
