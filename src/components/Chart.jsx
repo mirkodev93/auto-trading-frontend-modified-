@@ -19,7 +19,7 @@ function TradingViewWidget({ selectedToken = "sol" }) {
     const doc = iframe.contentDocument || iframe.contentWindow?.document;
     if (!doc) return;
 
-    const symbol = `MEXC:${selectedToken.toUpperCase()}USDT`;
+    const symbol = `BINANCE:${selectedToken.toUpperCase()}USDT`;
 
     const widgetConfig = `
       {
