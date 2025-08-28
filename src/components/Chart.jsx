@@ -36,14 +36,16 @@ function TradingViewWidget({ selectedToken = "sol" }) {
         "save_image": true,
         "style": "1",
         "symbol": "${symbol}",
-        "theme": "dark",
+        "theme": "light",
         "timezone": "Asia/Tokyo",
-        "backgroundColor": "#0F0F0F",
-        "gridColor": "rgba(242, 242, 242, 0.06)",
+        "backgroundColor": "#FFFFFF",
+        "gridColor": "rgba(0, 0, 0, 0.3)",
         "watchlist": [],
         "withdateranges": false,
         "compareSymbols": [],
-        "studies": [],
+        "studies": [
+          "STD;SMA"
+        ],
         "autosize": true
       }
     `.trim();

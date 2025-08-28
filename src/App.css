@@ -1949,7 +1949,13 @@ body {
 }
 .tab:hover { color: #fff; }
 .tab.active {
-  color: #111827;
+  color: cyan;
   background: #ffffff;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  box-shadow: var(--card-shadow);
+  backdrop-filter: var(--glass-blur);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 .tab-content { padding-top: 12px; padding-bottom: 12px; }

@@ -7,7 +7,7 @@ function Rules({ rules, setRules }) {
       id: (rules.at(-1)?.id ?? 0) + 1,
       setpoint: null,
       side: 0,
-      percentage: null
+      percentage: 100
     };
     setRules([...rules, newRule]);
   };
