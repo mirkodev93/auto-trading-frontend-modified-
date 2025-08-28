@@ -10,6 +10,7 @@ body {
   min-height: 100vh;
   color: #fff;
   overflow-x: hidden;
+  overflow-y: hidden !important;
 }
 
 :root {
@@ -1052,6 +1053,7 @@ select.form-input option {
 html,
 body {
   height: 100%;
+  overflow: hidden !important;
 }
 
 @media (min-width: 1025px) {
@@ -1499,7 +1501,7 @@ body {
   gap: 16px;
   height: 100vh;
   min-height: 0 !important;
-  overflow-y: auto;
+  overflow: hidden !important;
 }
 
 .right-panel .rules-wrap {
@@ -1927,3 +1929,27 @@ body {
   transform: translateY(0);
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
 }
+
+.tabs-wrap { margin-bottom: 8px; }
+.tabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+.tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #cfd6e4;
+  padding: 8px 14px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+.tab:hover { color: #fff; }
+.tab.active {
+  color: #111827;
+  background: #ffffff;
+}
+.tab-content { padding-top: 12px; padding-bottom: 12px; }

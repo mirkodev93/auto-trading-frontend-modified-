@@ -2,18 +2,16 @@ import React, { useState, useEffect } from "react";
 import Toggle from "./components/Toggle.jsx";
 import Token from "./components/Token.jsx";
 import Balance from "./components/Balance.jsx";
-import Rules from "./components/Rules.jsx";
+import TradeModeTabs from "./components/TradeModeTabs.jsx";
 import Chart from "./components/Chart.jsx";
-import AutoTrading from "./components/AutoTrading.jsx";
 import History from "./components/History.jsx";
-import PriceRange from "./components/PriceRange.jsx";
 import "./App.css";
 
 function App() {
   const [price, setPrice] = useState(0);
   const [rules, setRules] = useState([]);
   const [balanceArr, setBalanceArr] = useState([]);
-  const [isAuto, setIsAuto] = useState(false);
+  const [mode, setMode] = useState("Manual");
   const [histories, setHistories] = useState([]);
   const [isFuture, setIsFuture] = useState(false);
   const [selectedToken, setSelectedToken] = useState("sol");
@@ -72,11 +70,11 @@ function App() {
     const settingsObj = {
       future: !!isFuture,
       token: String(selectedToken ?? "sol"),
-      autoTrading: !!isAuto,
-      rules: isAuto ? [] : (Array.isArray(rules) ? rules : []),
-      minPrice: isAuto ? Number(minPrice) || 0 : 0,
-      maxPrice: isAuto ? Number(maxPrice) || 0 : 0,
-      time: isAuto ? Number(time) || 0 : 0,
+      mode: String(mode),
+      rules: (Array.isArray(rules) ? rules : []),
+      minPrice: (Number(minPrice) || 0),
+      maxPrice: (Number(maxPrice) || 0),
+      time: (Number(time) || 0),
     };
     const payload = { settings: JSON.stringify(settingsObj) };
     try {
@@ -90,7 +88,7 @@ function App() {
   async function getSettings() {
     try {
       const res = await fetch(`http://localhost:4000/api/trading`, { cache: "no-store" });
-      const text = await res.text(); // read body first so we can surface errors
+      const text = await res.text();
       if (!res.ok) {
         throw new Error(`GET /api/trading failed: ${res.status} ${text}`);
       }
@@ -128,7 +126,7 @@ function App() {
       const s = parseSettingsResponse(data);
       setIsFuture(!!s.future);
       setSelectedToken(s.token ?? "sol");
-      setIsAuto(!!s.autoTrading);
+      setMode(s.mode === "Auto" ? "Auto" : "Manual");
       setRules(Array.isArray(s.rules) ? s.rules : []);
       setMinPrice(Number(s.minPrice) || 0);
       setMaxPrice(Number(s.maxPrice) || 0);
@@ -146,10 +144,18 @@ function App() {
       <div className="right-panel">
         <Token selectedToken={selectedToken} setSelectedToken={setSelectedToken} onSave={handleSave} />
         <Balance price={price} setPrice={setPrice} balanceArr={balanceArr} setBalanceArr={setBalanceArr} selectedToken={selectedToken} />
-        <AutoTrading isAuto={isAuto} setIsAuto={setIsAuto} />
-        {
-          isAuto ? (<PriceRange minPrice={minPrice} setMinPrice={setMinPrice} maxPrice={maxPrice} setMaxPrice={setMaxPrice} time={time} setTime={setTime} />) : (<Rules rules={rules} setRules={setRules} />)
-        }
+        <TradeModeTabs
+          mode={mode}
+          onModeChange={setMode}
+          rules={rules}
+          setRules={setRules}
+          minPrice={minPrice}
+          setMinPrice={setMinPrice}
+          maxPrice={maxPrice}
+          setMaxPrice={setMaxPrice}
+          time={time}
+          setTime={setTime}
+        />
       </div>
       <div className="history-wrapper">
         <History histories={histories} setHistories={setHistories} />

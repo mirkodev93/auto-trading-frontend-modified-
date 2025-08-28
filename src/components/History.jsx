@@ -17,7 +17,7 @@ function History({ histories, setHistories }) {
       }
     };
     fetchData();
-  }, [setHistories]);
+  }, []);
 
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -30,7 +30,15 @@ function History({ histories, setHistories }) {
 
   const handleClear = async () => {
     try {
-      setHistories([]);
+      const fetchData = async () => {
+        try {
+          const data = await clearHistories();
+          setHistories(data);
+        } catch (e) {
+          console.error("Failed to clear histories", e);
+        }
+      };
+      fetchData();
     } catch (e) {
       console.error("Failed to clear history", e);
     }
@@ -119,15 +127,15 @@ function History({ histories, setHistories }) {
             <div className="trade-time">{entry.time}</div>
             {entry.swapmode ? (
               <div className="trade-action">
-                Swapped {Math.abs(entry.changed_sol).toFixed(2)} SOL to {Math.abs(entry.changed_usdt).toFixed(2)} USDT
-                at {entry.changed_price.toFixed(2)}, current balance: {entry.balance[2].value.toFixed(2)} SOL, {entry.balance[3].value.toFixed(2)} USDT,
-                total: {entry.total.toFixed(2)}, fee: {entry.fee.toFixed(2)}
+                Swapped {Math.abs(entry.changed_usdt).toFixed(2)} USDT to {Math.abs(entry.changed_sol).toFixed(2)} SOL
+                at {entry.changed_price.toFixed(2)}, current balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(2)} SOL, {(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)} USDT,
+                total: {entry.total?.toFixed?.(2) ?? "0.00"}, fee: {entry.fee?.toFixed?.(2) ?? "0.00"}
               </div>
             ) : (
               <div className="trade-action">
-                Swapped {Math.abs(entry.changed_usdt).toFixed(2)} USDT to {Math.abs(entry.changed_sol).toFixed(2)} SOL
-                at {entry.changed_price.toFixed(2)}, current balance: {entry.balance[2].value.toFixed(2)} SOL, {entry.balance[3].value.toFixed(2)} USDT,
-                total: {entry.total.toFixed(2)}, fee: {entry.fee.toFixed(2)}
+                Swapped {Math.abs(entry.changed_sol).toFixed(2)} SOL to {Math.abs(entry.changed_usdt).toFixed(2)} USDT
+                at {entry.changed_price.toFixed(2)}, current balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(2)} SOL, {(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)} USDT,
+                total: {entry.total?.toFixed?.(2) ?? "0.00"}, fee: {entry.fee?.toFixed?.(2) ?? "0.00"}
               </div>
             )}
           </div>

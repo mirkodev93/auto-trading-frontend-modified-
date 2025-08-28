@@ -1,27 +1,5 @@
 //const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:4000";
 
-export async function getRules() {
-  const r = await fetch(`http://localhost:4000/api/rules`);
-  if (!r.ok) throw new Error("Failed to fetch rules");
-  return r.json();
-}
-
-export async function createRule(data) {
-  const r = await fetch(`http://localhost:4000/api/rules`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  if (!r.ok) throw new Error("Failed to create rule");
-  return r.json();
-}
-
-export async function clearRules() {
-  const r = await fetch(`http://localhost:4000/api/rules`, { method: "DELETE" });
-  if (!r.ok) throw new Error("Failed to clear rules");
-  return r.json();
-}
-
 export async function getHistories(limit = 100) {
   const r = await fetch(`http://localhost:4000/api/histories?limit=${limit}`);
   if (!r.ok) throw new Error("Failed to fetch histories");
@@ -49,5 +27,11 @@ export async function getBalances() {
 export async function deleteRule(id) {
   const r = await fetch(`http://localhost:4000/api/rules/${id}`, { method: "DELETE" });
   if (!r.ok) throw new Error("Failed to delete rule");
+  return r.json();
+}
+
+export async function clearHistories() {
+  const r = await fetch(`http://localhost:4000/api/histories`, { method: "DELETE" });
+  if (!r.ok) throw new Error("Failed to clear histories");
   return r.json();
 }
