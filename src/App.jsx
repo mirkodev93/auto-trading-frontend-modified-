@@ -128,9 +128,9 @@ function App() {
       setSelectedToken(s.token ?? "sol");
       setMode(s.mode === "Auto" ? "Auto" : "Manual");
       setRules(Array.isArray(s.rules) ? s.rules : []);
-      setMinPrice(Number(s.minPrice) || 100);
-      setMaxPrice(Number(s.maxPrice) || 100);
-      setTime(Number(s.time) || 100);
+      setMinPrice(Number(s.minPrice) || 0);
+      setMaxPrice(Number(s.maxPrice) || 0);
+      setTime(Number(s.time) || 0);
     };
     fetchData();
   }, []);
