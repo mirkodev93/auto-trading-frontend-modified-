@@ -1,33 +1,91 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import "../App.css";
+import { toast } from 'react-toastify';
 
-function Rules({ rules, setRules }) {
+function Rules({ manualTrade, setManualTrade, handleSave }) {
+  const [forms, setForms] = useState(manualTrade.rules || []);
+
+  useEffect(() => {
+    setForms(manualTrade.rules || []);
+  }, [manualTrade.rules]);
+
+  useEffect(() => {
+    setManualTrade(prev => ({ ...prev, rules: forms }));
+  }, [forms, setManualTrade]);
+
   const addRule = () => {
+    if(forms.at(-1)?.percentage == 0){
+      toast.error("Percentage must be bigger than 0");
+      return;
+    }
+    if(forms.at(-1)?.setpoint == null) {
+      toast.error("Setpoint can't be null");
+      return;
+    }
+    const nextId = (forms.at?.(-1)?.id ?? forms[forms.length - 1]?.id ?? 0) + 1;
     const newRule = {
-      id: (rules.at(-1)?.id ?? 0) + 1,
+      id: nextId,
       setpoint: null,
-      side: 0,
-      percentage: 100
+      side: false,
+      percentage: 100,
+      isSwapped: false,
     };
-    setRules([...rules, newRule]);
+    setForms([...forms, newRule]);
+    setManualTrade(prev => ({ ...prev, rules: forms }));
   };
 
   const deleteRule = (id) => {
-    setRules(rules.filter(rule => rule.id !== id));
+    setForms(forms.filter(rule => rule.id !== id));
   };
 
   const handleChange = (id, field, value) => {
-    setRules(rules.map(rule => (rule.id === id ? { ...rule, [field]: value } : rule)));
+    setForms(forms.map(rule => {
+      if (rule.id !== id) return rule;
+      let v = value;
+      if (field === 'side') v = (value === true || value === 'true' || value === 1 || value === '1');
+      if (field === 'setpoint' || field === 'percentage') v = Number(value) || 0;
+      return { ...rule, [field]: v };
+    }));
+  };
+
+  const handleManual = (status) => {
+    let error = null;
+    forms.map(form => {
+      if(form.percentage == 0){
+        toast.error("Percentage must be bigger than 0");
+        error = true;
+        return;
+      }
+      if(form.setpoint == null) {
+        toast.error("Setpoint can't be null");
+        error = true;
+        return;
+      }
+    })
+    if(error) return;
+    setManualTrade(prev => ({ ...prev, isEnabled: status }));
+    handleSave();
   };
 
   return (
     <>
-      <div className="rules-wrap">
+      <div className="rules-wrap fancy-card manual-trade">
         {/* Only this list becomes scrollable */}
+        <button className="manual-label">Force</button>
+
+        <div className="munual-toggle">
+          {manualTrade.isEnabled ?
+            <button className="save-btn stop-btn" onClick={() => handleManual(false)}>Stop</button> :
+            <button className="save-btn " onClick={() => handleManual(true)}>Start</button>
+          }
+        </div>
+
         <div className="rules-scroll" role="region" aria-label="Trading rules">
-          {rules.map((r) => (
-            <div className="swap-form fancy-card" id={`rule-${r.id}`} key={r.id}>
+          {forms.map((r) => (
+            <div className="swap-form fancy-card" id={`rule-${r.id}`} key={r.id} style={{ opacity: manualTrade.isEnabled ? "50%" : "" }}>
               <button
+                disabled={manualTrade.isEnabled}
                 className="delete-button pretty"
                 onClick={() => deleteRule(r.id)}
                 aria-label={`Delete rule ${r.id}`}
@@ -36,12 +94,18 @@ function Rules({ rules, setRules }) {
                 ×
               </button>
 
+              <div className="tick">
+                <label>&nbsp;</label>
+                <div className="pix">{r.isSwapped ? "✅" : null}</div>
+              </div>
+
               <div className="form-row">
                 <div className="form-group">
                   <label>Set Point</label>
                   <input
                     type="number"
                     step="any"
+                    disabled={manualTrade.isEnabled}
                     className="form-input"
                     placeholder="e.g. 175.20"
                     onChange={(e) => handleChange(r.id, 'setpoint', parseFloat(e.target.value))}
@@ -52,6 +116,7 @@ function Rules({ rules, setRules }) {
                 <div className="form-group">
                   <label>Direction</label>
                   <select
+                    disabled={manualTrade.isEnabled}
                     className="form-input"
                     value={r.side ? 'true' : 'false'}
                     onChange={(e) => handleChange(r.id, 'side', e.target.value === 'true')}
@@ -66,6 +131,7 @@ function Rules({ rules, setRules }) {
                   <input
                     type="number"
                     step="any"
+                    disabled={manualTrade.isEnabled}
                     className="form-input"
                     value={r.percentage ?? ""}
                     placeholder="e.g. 10"
@@ -76,7 +142,7 @@ function Rules({ rules, setRules }) {
             </div>
           ))}
 
-          {rules.length === 0 && (
+          {forms.length === 0 && (
             <div className="empty-state" style={{ marginTop: 8 }}>
               No rules yet. Click “Add Rule” to create one.
             </div>
@@ -84,7 +150,7 @@ function Rules({ rules, setRules }) {
         </div>
 
         <div className="panel-actions">
-          <button className="add-button gradient" onClick={addRule}>
+          <button disabled={manualTrade.isEnabled} className="add-button gradient" onClick={addRule}>
             + Add Rule
           </button>
         </div>

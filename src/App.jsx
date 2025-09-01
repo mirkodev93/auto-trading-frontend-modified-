@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Toggle from "./components/Toggle.jsx";
-import Token from "./components/Token.jsx";
 import Balance from "./components/Balance.jsx";
-import TradeModeTabs from "./components/TradeModeTabs.jsx";
+import Trading from "./components/Trading.jsx";
 import Chart from "./components/Chart.jsx";
 import History from "./components/History.jsx";
 import "./App.css";
 
 function App() {
   const [price, setPrice] = useState(0);
-  const [rules, setRules] = useState([]);
+  const [mode, setMode] = useState("Trading");
   const [balanceArr, setBalanceArr] = useState([]);
-  const [mode, setMode] = useState("Manual");
   const [histories, setHistories] = useState([]);
   const [isFuture, setIsFuture] = useState(false);
   const [selectedToken, setSelectedToken] = useState("sol");
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(0);
-  const [time, setTime] = useState(0);
+  const [manualTrade, setManualTrade] = useState({ isEnabled: false, rules: [] });
+  const [autoTrade, setAutoTrade] = useState({ isEnabled: false, minPrice: 0, maxPrice: 0, time: 0 });
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:4000");
@@ -38,6 +38,7 @@ function App() {
           setHistories((prev) => [msg.data.history, ...prev]);
           setBalanceArr(msg.data.balances);
           setPrice(msg.data.price);
+          setManualTrade((prev) => ({...prev, rules: msg.data.rules}));
         }
       } catch (err) {
         console.error("WS parse error:", err);
@@ -70,12 +71,10 @@ function App() {
     const settingsObj = {
       future: !!isFuture,
       token: String(selectedToken ?? "sol"),
-      mode: String(mode),
-      rules: (Array.isArray(rules) ? rules : []),
-      minPrice: (Number(minPrice) || 0),
-      maxPrice: (Number(maxPrice) || 0),
-      time: (Number(time) || 0),
+      manualTrade: manualTrade,
+      autoTrade: autoTrade,
     };
+    console.log("settings",settingsObj)
     const payload = { settings: JSON.stringify(settingsObj) };
     try {
       await sendConfig(payload);
@@ -126,11 +125,8 @@ function App() {
       const s = parseSettingsResponse(data);
       setIsFuture(!!s.future);
       setSelectedToken(s.token ?? "sol");
-      setMode(s.mode === "Auto" ? "Auto" : "Manual");
-      setRules(Array.isArray(s.rules) ? s.rules : []);
-      setMinPrice(Number(s.minPrice) || 0);
-      setMaxPrice(Number(s.maxPrice) || 0);
-      setTime(Number(s.time) || 0);
+      setManualTrade(s.manualTrade ?? {isEnabled: false, rules: []});
+      setAutoTrade(s.autoTrade ?? {});
     };
     fetchData();
   }, []);
@@ -138,23 +134,20 @@ function App() {
   return (
     <>
       <div className="chart-pane">
-        <Toggle isFuture={isFuture} setIsFuture={setIsFuture} />
+        <Toggle isFuture={isFuture} setIsFuture={setIsFuture} selectedToken={selectedToken} setSelectedToken={setSelectedToken} />
         <Chart selectedToken={selectedToken} />
       </div>
       <div className="right-panel">
-        <Token selectedToken={selectedToken} setSelectedToken={setSelectedToken} onSave={handleSave} />
+        <ToastContainer position="top-right" autoClose={3000} />
         <Balance price={price} setPrice={setPrice} balanceArr={balanceArr} setBalanceArr={setBalanceArr} selectedToken={selectedToken} />
-        <TradeModeTabs
+        <Trading
           mode={mode}
-          onModeChange={setMode}
-          rules={rules}
-          setRules={setRules}
-          minPrice={minPrice}
-          setMinPrice={setMinPrice}
-          maxPrice={maxPrice}
-          setMaxPrice={setMaxPrice}
-          time={time}
-          setTime={setTime}
+          setMode={setMode}
+          manualTrade={manualTrade}
+          setManualTrade={setManualTrade}
+          autoTrade={autoTrade}
+          setAutoTrade={setAutoTrade}
+          handleSave={handleSave}
         />
       </div>
       <div className="history-wrapper">

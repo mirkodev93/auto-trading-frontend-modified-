@@ -1,18 +1,6 @@
-//const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:4000";
-
 export async function getHistories(limit = 100) {
   const r = await fetch(`http://localhost:4000/api/histories?limit=${limit}`);
   if (!r.ok) throw new Error("Failed to fetch histories");
-  return r.json();
-}
-
-export async function postHistory(payload) {
-  const r = await fetch(`http://localhost:4000/api/histories`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  if (!r.ok) throw new Error("Failed to post history");
   return r.json();
 }
 
