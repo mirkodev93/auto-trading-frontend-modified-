@@ -1,3 +1,8 @@
+* {
+  box-sizing: border-box;
+}
+
+
 body {
   margin: 0;
   padding: 0;
@@ -95,11 +100,12 @@ body {
   top: 0;
   right: 0;
   width: 50vw;
-  height: 100vh;
 
   padding: 28px 18px calc(28px + var(--history-h));
   box-sizing: border-box;
   overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 
   display: flex;
   flex-direction: column;
@@ -110,6 +116,25 @@ body {
   background:
     radial-gradient(1200px 600px at 85% 10%, rgba(124, 58, 237, 0.08), transparent 60%),
     radial-gradient(900px 420px at 75% 85%, rgba(6, 182, 212, 0.06), transparent 60%);
+}
+
+/* Media query overrides for responsive design */
+@media (max-width: 1024px) {
+  .right-panel {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 20px 14px calc(20px + var(--history-h));
+    background: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .right-panel {
+    width: 94vw;
+    margin: 0 auto;
+    padding: 16px;
+  }
 }
 
 .fancy-card {
@@ -146,6 +171,7 @@ body {
 
 .balance-panel {
   padding: 18px 20px;
+  width: 100%;
 }
 
 .balance-header {
@@ -789,13 +815,7 @@ select.form-input option {
     margin: 0 auto 16px auto;
   }
 
-  .right-panel {
-    position: static;
-    width: 100%;
-    height: auto;
-    padding: 20px 14px calc(20px + var(--history-h));
-    background: none;
-  }
+
 
   .balance-row {
     grid-template-columns: 1fr 1fr;
@@ -829,11 +849,7 @@ select.form-input option {
     border-radius: 16px;
   }
 
-  .right-panel {
-    width: 94vw;
-    margin: 0 auto;
-    padding: 16px;
-  }
+
 }
 
 .history-header {
@@ -983,7 +999,8 @@ select.form-input option {
   align-items: baseline;
   justify-content: center;
   gap: 6px;
-  font-size: 15px;
+  font-size: 18px;
+  min-height: 40px;
 }
 
 .panel-header {
@@ -1011,7 +1028,7 @@ select.form-input option {
 
 .token-col .chip-value {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .balance-grid {
@@ -1031,6 +1048,10 @@ select.form-input option {
   padding: 6px 14px;
   border-radius: 8px;
   white-space: nowrap;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 
   color: #fff;
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
@@ -1048,19 +1069,14 @@ body {
   }
 }
 
-.right-panel {
-  overflow-y: auto;
-  overflow-x: hidden;
-  min-height: 0;
-  box-sizing: border-box;
-}
+
 
 .auto-trade {
   margin: 20px 20px;
 }
 
 .manual-trade {
-  margin: 10px 20px;
+  margin: 30px 20px 10px 20px;
 }
 
 .rules-wrap {
@@ -1175,10 +1191,7 @@ body {
   overflow-x: hidden;
 }
 
-.right-panel {
-  padding-bottom: 28px !important;
-  overflow-x: hidden;
-}
+
 
 @media (max-width: 640px) {
   :root {
@@ -1227,15 +1240,6 @@ body {
   border: 1px solid var(--card-brd);
   box-shadow: var(--card-sh);
   backdrop-filter: blur(10px);
-}
-
-.right-panel {
-  gap: 18px;
-  padding: 28px var(--gutter) calc(28px + var(--history-h)) !important;
-}
-
-.price-col {
-  grid-column: 1 / auto;
 }
 
 .token-col .chip-value {
@@ -1399,30 +1403,11 @@ body {
   box-sizing: border-box !important;
 }
 
-.right-panel {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center;
-  gap: 16px;
-  height: 100vh;
-  min-height: 0 !important;
-  overflow: hidden !important;
-}
 
-.right-panel {
-  padding-bottom: 28px !important;
-  display: grid !important;
-  grid-template-rows: auto auto auto 1fr;
-  align-content: start;
-  min-height: 100vh;
-  overflow: hidden;
-}
 
-.right-panel {
-  display: block !important;
-  padding-bottom: 28px !important;
-  overflow-y: auto;
-}
+
+
+
 
 :root {
   --rules-gap: 420px;
@@ -1467,9 +1452,7 @@ body {
   overflow-x: hidden !important;
 }
 
-.right-panel {
-  gap: 0 !important;
-}
+
 
 .right-panel>* {
   margin-bottom: 24px;
@@ -1526,16 +1509,15 @@ body {
 }
 
 .auto-toggle {
-  margin: 10px 10px;
+  margin: 10px 10px 0px 0px;
   display: flex;
   justify-content: flex-end;
 }
 
 .munual-toggle {
-  margin-top: 10px;
+  margin: 10px 10px -10px 0px;
   display: flex;
   justify-content: flex-end;
-  margin-right: 10px;
 }
 
 .stop-btn {
@@ -1569,6 +1551,7 @@ body {
 
 .tabs-wrap {
   margin-bottom: 8px;
+  width: 100%;
 }
 
 .tabs {
@@ -1613,6 +1596,9 @@ body {
 
 .tick {
   width: 30px;
+  margin-top: 55px;
+  margin-right: -10px;
+  margin-left: 5px;
 }
 
 .pix {

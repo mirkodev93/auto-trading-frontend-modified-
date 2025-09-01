@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
@@ -8,12 +8,20 @@ const PriceRange = ({ autoTrade, setAutoTrade, handleSave }) => {
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
     const [time, setTime] = useState(0);
+    const shouldSaveRef = useRef(false);
 
     useEffect(() => {
         setMinPrice(autoTrade.minPrice);
         setMaxPrice(autoTrade.maxPrice);
         setTime(autoTrade.time);
     }, [autoTrade.minPrice, autoTrade.maxPrice, autoTrade.time]);
+
+    useEffect(() => {
+        if (shouldSaveRef.current) {
+            handleSave();
+            shouldSaveRef.current = false;
+        }
+    }, [autoTrade.isEnabled, handleSave]);
 
     const handleChange = (field, value) => {
 
@@ -40,8 +48,9 @@ const PriceRange = ({ autoTrade, setAutoTrade, handleSave }) => {
             toast.error("Please set price correctly")
             return;
         }
+
+        shouldSaveRef.current = true;
         setAutoTrade(prev => ({ ...prev, isEnabled: status }));
-        handleSave();
     }
 
 

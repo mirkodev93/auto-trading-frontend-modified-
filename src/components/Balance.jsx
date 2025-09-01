@@ -4,14 +4,15 @@ import { getBalances } from '../lib/api';
 
 function Balance({ price, setPrice, balanceArr, setBalanceArr, selectedToken = "sol" }) {
     useEffect(() => {
-        (async () => {
+        const getBalances = async () => {
             try {
                 const res = await getBalances();
                 setBalanceArr(res);
             } catch (error) {
                 console.error("Error fetching balances:", error);
             }
-        })();
+        }
+        getBalances();
     }, []);
 
     const solItem = balanceArr.find(b => String(b?.token).toLowerCase() === selectedToken.toLowerCase());

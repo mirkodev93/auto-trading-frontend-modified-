@@ -1,10 +1,11 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import "../App.css";
 import { toast } from 'react-toastify';
 
 function Rules({ manualTrade, setManualTrade, handleSave }) {
   const [forms, setForms] = useState(manualTrade.rules || []);
+  const shouldSaveRef = useRef(false);
 
   useEffect(() => {
     setForms(manualTrade.rules || []);
@@ -13,6 +14,14 @@ function Rules({ manualTrade, setManualTrade, handleSave }) {
   useEffect(() => {
     setManualTrade(prev => ({ ...prev, rules: forms }));
   }, [forms, setManualTrade]);
+
+  // Save to database when isEnabled changes
+  useEffect(() => {
+    if (shouldSaveRef.current) {
+      handleSave();
+      shouldSaveRef.current = false;
+    }
+  }, [manualTrade.isEnabled, handleSave]);
 
   const addRule = () => {
     if(forms.at(-1)?.percentage == 0){
@@ -44,12 +53,19 @@ function Rules({ manualTrade, setManualTrade, handleSave }) {
       if (rule.id !== id) return rule;
       let v = value;
       if (field === 'side') v = (value === true || value === 'true' || value === 1 || value === '1');
-      if (field === 'setpoint' || field === 'percentage') v = Number(value) || 0;
+      if (field === 'setpoint' || field === 'percentage') {
+        if (value === '' || value === null || value === undefined) {
+          v = null;
+        } else {
+          const numValue = Number(value);
+          v = isNaN(numValue) ? null : numValue;
+        }
+      }
       return { ...rule, [field]: v };
     }));
   };
 
-  const handleManual = (status) => {
+  const handleManual = async (status) => {
     let error = null;
     forms.map(form => {
       if(form.percentage == 0){
@@ -64,8 +80,9 @@ function Rules({ manualTrade, setManualTrade, handleSave }) {
       }
     })
     if(error) return;
+    
+    shouldSaveRef.current = true;
     setManualTrade(prev => ({ ...prev, isEnabled: status }));
-    handleSave();
   };
 
   return (
@@ -95,7 +112,6 @@ function Rules({ manualTrade, setManualTrade, handleSave }) {
               </button>
 
               <div className="tick">
-                <label>&nbsp;</label>
                 <div className="pix">{r.isSwapped ? "✅" : null}</div>
               </div>
 
@@ -108,7 +124,7 @@ function Rules({ manualTrade, setManualTrade, handleSave }) {
                     disabled={manualTrade.isEnabled}
                     className="form-input"
                     placeholder="e.g. 175.20"
-                    onChange={(e) => handleChange(r.id, 'setpoint', parseFloat(e.target.value))}
+                    onChange={(e) => handleChange(r.id, 'setpoint', e.target.value)}
                     value={r.setpoint ?? ""}
                   />
                 </div>
@@ -135,7 +151,7 @@ function Rules({ manualTrade, setManualTrade, handleSave }) {
                     className="form-input"
                     value={r.percentage ?? ""}
                     placeholder="e.g. 10"
-                    onChange={(e) => handleChange(r.id, 'percentage', parseFloat(e.target.value))}
+                    onChange={(e) => handleChange(r.id, 'percentage', e.target.value)}
                   />
                 </div>
               </div>

@@ -73,44 +73,6 @@ export default function Toggle({ isFuture, setIsFuture, selectedToken = "sol", s
           </select>
         </div>
       </div>
-      {/* <div
-        onClick={() => setIsStart(!isStart)}
-        style={{
-          width: "60px",
-          height: "30px",
-          background: isStart ? "#00FF00" : "rgba(242, 242, 242, 0.6)",
-          borderRadius: "9999px",
-          position: "relative",
-          cursor: "pointer",
-          transition: "background 0.3s ease",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: "3px",
-            left: isStart ? "3px" : "32px",
-            width: "24px",
-            height: "24px",
-            borderRadius: "50%",
-            background: "white",
-            transition: "left 0.3s ease",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
-          }}
-        />
-      </div>
-      <span
-        style={{
-          fontWeight: 600,
-          fontSize: "16px",
-          color: "#e5e7eb",
-          letterSpacing: "0.3px",
-          userSelect: "none",
-        }}
-      >
-        Start / Stop
-      </span> */}
     </div>
   );
 }

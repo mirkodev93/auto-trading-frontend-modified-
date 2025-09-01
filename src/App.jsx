@@ -7,6 +7,7 @@ import Balance from "./components/Balance.jsx";
 import Trading from "./components/Trading.jsx";
 import Chart from "./components/Chart.jsx";
 import History from "./components/History.jsx";
+import { sendConfig, getSettings } from "./lib/api.js";
 import "./App.css";
 
 function App() {
@@ -51,22 +52,6 @@ function App() {
     return () => ws.close();
   }, []);
 
-  async function sendConfig(payload) {
-    const res = await fetch(`http://localhost:4000/api/trading/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      throw new Error(`Save failed: ${res.status} ${text}`);
-    }
-    return res.json();
-  }
-
   const handleSave = async () => {
     const settingsObj = {
       future: !!isFuture,
@@ -74,7 +59,6 @@ function App() {
       manualTrade: manualTrade,
       autoTrade: autoTrade,
     };
-    console.log("settings",settingsObj)
     const payload = { settings: JSON.stringify(settingsObj) };
     try {
       await sendConfig(payload);
@@ -83,20 +67,6 @@ function App() {
       console.error(e);
     }
   };
-
-  async function getSettings() {
-    try {
-      const res = await fetch(`http://localhost:4000/api/trading`, { cache: "no-store" });
-      const text = await res.text();
-      if (!res.ok) {
-        throw new Error(`GET /api/trading failed: ${res.status} ${text}`);
-      }
-      return JSON.parse(text);
-    } catch (e) {
-      console.error("getSettings failed:", e);
-      throw e;
-    }
-  }
 
   function parseSettingsResponse(data) {
     if (Array.isArray(data)) {

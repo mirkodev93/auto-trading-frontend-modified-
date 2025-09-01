@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "../App.css";
 import Rules from "./Rules";
 import PriceRange from "./PriceRange";
+import { getTradingStatus, updateTradingStatus } from "../lib/api";
 
 export default function Trading({
     mode,
@@ -17,8 +18,7 @@ export default function Trading({
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch("http://localhost:4000/api/trading/start");
-                const data = await res.json();
+                const data = await getTradingStatus();
                 setIsStart(data.isStart);
             } catch (err) {
                 console.error(err);
@@ -30,13 +30,12 @@ export default function Trading({
     const switchMode = (next) => setMode && setMode(next);
 
     const handleStart = async (isStart) => {
-        const res = await fetch(`http://localhost:4000/api/trading/start`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ isStart: isStart }),
-        });
-        const data = await res.json();
-        setIsStart(data.isStart);
+        try {
+            const data = await updateTradingStatus(isStart);
+            setIsStart(data.isStart);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (
