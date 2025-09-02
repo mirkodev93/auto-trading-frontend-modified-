@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { getHistories, clearHistories } from '../lib/api';
 import "../App.css";
 
-function History({ histories, setHistories }) {
+const History = ({ histories, setHistories }) => {
   const [expanded, setExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [pendingQuery, setPendingQuery] = useState("");

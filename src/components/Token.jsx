@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 
-function Token({ selectedToken = "sol", setSelectedToken }) {
+const Token = ({ selectedToken = "sol", setSelectedToken }) => {
     const handleChange = (e) => {
         setSelectedToken?.(e.target.value);
     };

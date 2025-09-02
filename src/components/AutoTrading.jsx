@@ -4,7 +4,7 @@ import {toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 
-const PriceRange = ({ autoTrade, setAutoTrade, handleSave }) => {
+const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
     const [time, setTime] = useState(0);
@@ -26,15 +26,12 @@ const PriceRange = ({ autoTrade, setAutoTrade, handleSave }) => {
     const handleChange = (field, value) => {
 
         if (field === "minPrice") {
-            setMinPrice(value);
             setAutoTrade(prev => ({ ...prev, minPrice: value }));
         }
         if (field === "maxPrice") {
-            setMaxPrice(maxPrice);
             setAutoTrade(prev => ({ ...prev, maxPrice: value }));
         }
         if (field === "time") {
-            setTime(value);
             setAutoTrade(prev => ({ ...prev, time: value }));
         }
     };
@@ -101,4 +98,4 @@ const PriceRange = ({ autoTrade, setAutoTrade, handleSave }) => {
     );
 };
 
-export default PriceRange;
+export default AutoTrading;

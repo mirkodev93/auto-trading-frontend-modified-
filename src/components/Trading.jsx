@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import "../App.css";
-import Rules from "./Rules";
-import PriceRange from "./PriceRange";
+import ManualTrading from "./ManualTrading";
+import AutoTrading from "./AutoTrading";
 import { getTradingStatus, updateTradingStatus } from "../lib/api";
 
-export default function Trading({
+const Trading = ({
     mode,
     setMode,
     manualTrade,
@@ -12,7 +13,7 @@ export default function Trading({
     autoTrade,
     setAutoTrade,
     handleSave
-}) {
+}) => {
     const [isStart, setIsStart] = useState(true);
 
     useEffect(() => {
@@ -22,6 +23,7 @@ export default function Trading({
                 setIsStart(data.isStart);
             } catch (err) {
                 console.error(err);
+                toast.error("Failed to fetch trading status");
             }
         };
         fetchData();
@@ -35,6 +37,41 @@ export default function Trading({
             setIsStart(data.isStart);
         } catch (err) {
             console.error(err);
+            toast.error("Failed to update trading status");
+        }
+    }
+
+    const handleSaveClick = async () => {
+        // Validate Auto Trade settings
+        if (autoTrade.time <= 0) {
+            toast.error("The time must be bigger than 0");
+            return;
+        }
+        if (autoTrade.minPrice > autoTrade.maxPrice) {
+            toast.error("Please set price correctly (min price must be less than or equal to max price)");
+            return;
+        }
+
+        // Validate Manual Trade settings
+        let hasError = false;
+        manualTrade.rules.forEach((rule, index) => {
+            if (rule.percentage <= 0) {
+                toast.error(`Rule ${index + 1}: Percentage must be bigger than 0`);
+                hasError = true;
+            }
+            if (rule.setpoint == null || rule.setpoint === undefined || rule.setpoint === "") {
+                toast.error(`Rule ${index + 1}: Setpoint can't be null`);
+                hasError = true;
+            }
+        });
+        if (hasError) return;
+
+        try {
+            await handleSave();
+            toast.success("Settings saved successfully");
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to save settings");
         }
     }
 
@@ -68,23 +105,16 @@ export default function Trading({
                             Stop
                         </button>
                     )}
-                    <button type="button" className="save-btn" onClick={handleSave}>
+                    <button type="button" className="save-btn" onClick={handleSaveClick}>
                         Save
                     </button>
                 </div>
             </div>
             {!isStart ? (
-                <div>
+                <div style={{height: "600px", display: "flex", justifyContent: "center", alignItems: "center"}}>
                     <button
                         onClick={() => handleStart(true)}
-                        style={{
-                            width: "60px",
-                            padding: "8px",
-                            margin: "150px",
-                            background: "#00FF00",
-                            borderRadius: "10px",
-                            cursor: "pointer"
-                        }}
+                        className="save-btn"
                     >
                         Start
                     </button>
@@ -93,8 +123,8 @@ export default function Trading({
                 <div className="tab-content">
                     {mode === "Trading" ? (
                         <div>
-                            <PriceRange autoTrade={autoTrade} setAutoTrade={setAutoTrade} handleSave={handleSave}/>
-                            <Rules manualTrade={manualTrade} setManualTrade={setManualTrade} handleSave={handleSave}/>
+                            <AutoTrading autoTrade={autoTrade} setAutoTrade={setAutoTrade} handleSave={handleSave}/>
+                            <ManualTrading manualTrade={manualTrade} setManualTrade={setManualTrade} handleSave={handleSave}/>
                         </div>
                     ) : null}
                 </div>
@@ -102,3 +132,5 @@ export default function Trading({
         </div>
     )
 }
+
+export default Trading;

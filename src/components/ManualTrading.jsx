@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import "../App.css";
 import { toast } from 'react-toastify';
 
-function Rules({ manualTrade, setManualTrade, handleSave }) {
+const Rules = ({ manualTrade, setManualTrade, handleSave }) => {
   const [forms, setForms] = useState(manualTrade.rules || []);
   const shouldSaveRef = useRef(false);
 
@@ -24,13 +24,15 @@ function Rules({ manualTrade, setManualTrade, handleSave }) {
   }, [manualTrade.isEnabled, handleSave]);
 
   const addRule = () => {
-    if(forms.at(-1)?.percentage == 0){
-      toast.error("Percentage must be bigger than 0");
-      return;
-    }
-    if(forms.at(-1)?.setpoint == null) {
-      toast.error("Setpoint can't be null");
-      return;
+    if (forms.length > 0) {
+      if(forms.at(-1)?.percentage == 0){
+        toast.error("Percentage must be bigger than 0");
+        return;
+      }
+      if(forms.at(-1)?.setpoint == null) {
+        toast.error("Setpoint can't be null");
+        return;
+      }
     }
     const nextId = (forms.at?.(-1)?.id ?? forms[forms.length - 1]?.id ?? 0) + 1;
     const newRule = {
@@ -67,14 +69,14 @@ function Rules({ manualTrade, setManualTrade, handleSave }) {
 
   const handleManual = async (status) => {
     let error = null;
-    forms.map(form => {
+    forms.map((form, index) => {
       if(form.percentage == 0){
-        toast.error("Percentage must be bigger than 0");
+        toast.error(`Rule ${index + 1}: Percentage must be bigger than 0`);
         error = true;
         return;
       }
       if(form.setpoint == null) {
-        toast.error("Setpoint can't be null");
+        toast.error(`Rule ${index + 1}: Setpoint can't be null`);
         error = true;
         return;
       }

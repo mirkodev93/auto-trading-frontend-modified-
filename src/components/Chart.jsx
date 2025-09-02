@@ -5,7 +5,7 @@ import '../App.css';
  * TradingView Advanced Chart embedded in its own iframe so
  * cross-origin errors won't bubble into React dev overlay.
  */
-function TradingViewWidget({ selectedToken = "sol" }) {
+const TradingViewWidget = ({ selectedToken = "sol" }) => {
   const iframeRef = useRef(null);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 
-export default function Toggle({ isFuture, setIsFuture, selectedToken = "sol", setSelectedToken }) {
+const Toggle = ({ isFuture, setIsFuture, selectedToken = "sol", setSelectedToken }) => {
 
   const handleChange = (e) => {
     setSelectedToken?.(e.target.value);
@@ -75,4 +75,6 @@ export default function Toggle({ isFuture, setIsFuture, selectedToken = "sol", s
       </div>
     </div>
   );
-}
+};
+
+export default Toggle;
