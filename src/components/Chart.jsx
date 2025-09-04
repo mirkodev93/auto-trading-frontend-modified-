@@ -31,20 +31,23 @@ const TradingViewWidget = ({ selectedToken = "sol" }) => {
         "hide_legend": false,
         "hide_volume": true,
         "hotlist": false,
-        "interval": "15",
+        "interval": "1",
         "locale": "en",
         "save_image": true,
         "style": "1",
         "symbol": "${symbol}",
         "theme": "light",
-        "timezone": "Asia/Tokyo",
+        "timezone": "Etc/UTC",
         "backgroundColor": "#FFFFFF",
         "gridColor": "rgba(0, 0, 0, 0.3)",
         "watchlist": [],
         "withdateranges": false,
         "compareSymbols": [],
         "studies": [
-          "STD;SMA"
+          {
+            "id": "MASimple@tv-basicstudies",
+            "inputs": { "length": 5 }
+          }
         ],
         "autosize": true
       }
