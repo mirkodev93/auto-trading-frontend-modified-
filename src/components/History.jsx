@@ -33,7 +33,7 @@ const History = ({ histories, setHistories }) => {
       const fetchData = async () => {
         try {
           const data = await clearHistories();
-          setHistories(data);
+          setHistories([]);
         } catch (e) {
           console.error("Failed to clear histories", e);
         }
