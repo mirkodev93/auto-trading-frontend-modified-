@@ -25,11 +25,11 @@ const Rules = ({ manualTrade, setManualTrade, handleSave }) => {
 
   const addRule = () => {
     if (forms.length > 0) {
-      if(forms.at(-1)?.percentage == 0){
+      if (forms.at(-1)?.percentage == 0) {
         toast.error("Percentage must be bigger than 0");
         return;
       }
-      if(forms.at(-1)?.setpoint == null) {
+      if (forms.at(-1)?.setpoint == null) {
         toast.error("Setpoint can't be null");
         return;
       }
@@ -70,19 +70,19 @@ const Rules = ({ manualTrade, setManualTrade, handleSave }) => {
   const handleManual = async (status) => {
     let error = null;
     forms.map((form, index) => {
-      if(form.percentage == 0){
+      if (form.percentage == 0) {
         toast.error(`Rule ${index + 1}: Percentage must be bigger than 0`);
         error = true;
         return;
       }
-      if(form.setpoint == null) {
+      if (form.setpoint == null) {
         toast.error(`Rule ${index + 1}: Setpoint can't be null`);
         error = true;
         return;
       }
     })
-    if(error) return;
-    
+    if (error) return;
+
     shouldSaveRef.current = true;
     setManualTrade(prev => ({ ...prev, isEnabled: status }));
   };
@@ -167,11 +167,11 @@ const Rules = ({ manualTrade, setManualTrade, handleSave }) => {
           )}
         </div>
 
-        <div className="panel-actions">
+        {!manualTrade.isEnabled && <div className="panel-actions">
           <button disabled={manualTrade.isEnabled} className="add-button gradient" onClick={addRule}>
             + Add Rule
           </button>
-        </div>
+        </div>}
       </div>
     </>
   );

@@ -105,13 +105,13 @@ const Trading = ({
                             Stop
                         </button>
                     )}
-                    <button type="button" className="save-btn" onClick={handleSaveClick}>
+                    {/*<button type="button" className="save-btn" onClick={handleSaveClick}>
                         Save
-                    </button>
+                    </button>*/}
                 </div>
             </div>
             {!isStart ? (
-                <div style={{height: "600px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <div style={{ height: "500px", display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <button
                         onClick={() => handleStart(true)}
                         className="save-btn"
@@ -123,8 +123,8 @@ const Trading = ({
                 <div className="tab-content">
                     {mode === "Trading" ? (
                         <div>
-                            <AutoTrading autoTrade={autoTrade} setAutoTrade={setAutoTrade} handleSave={handleSave}/>
-                            <ManualTrading manualTrade={manualTrade} setManualTrade={setManualTrade} handleSave={handleSave}/>
+                            <AutoTrading autoTrade={autoTrade} setAutoTrade={setAutoTrade} handleSave={handleSave} />
+                            <ManualTrading manualTrade={manualTrade} setManualTrade={setManualTrade} handleSave={handleSave} />
                         </div>
                     ) : null}
                 </div>
