@@ -18,7 +18,7 @@ function App() {
   const [isFuture, setIsFuture] = useState(false);
   const [selectedToken, setSelectedToken] = useState("sol");
   const [manualTrade, setManualTrade] = useState({ isEnabled: false, rules: [] });
-  const [autoTrade, setAutoTrade] = useState({ isEnabled: false, minPrice: 0, maxPrice: 0, time: 0 });
+  const [autoTrade, setAutoTrade] = useState({ isEnabled: false, maCount: 5, interval: 1, maRamda: 0, priceDelta: 0.5 });
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:4000");

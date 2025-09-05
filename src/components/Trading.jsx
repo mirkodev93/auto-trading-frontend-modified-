@@ -44,12 +44,20 @@ const Trading = ({
 
     const handleSaveClick = async () => {
         // Validate Auto Trade settings
-        if (autoTrade.time <= 0) {
-            toast.error("The time must be bigger than 0");
+        if (autoTrade.maCount <= 0) {
+            toast.error("MA count must be bigger than 0");
             return;
         }
-        if (autoTrade.minPrice > autoTrade.maxPrice) {
-            toast.error("Please set price correctly (min price must be less than or equal to max price)");
+        if (autoTrade.interval <= 0) {
+            toast.error("Interval must be bigger than 0");
+            return;
+        }
+        if (autoTrade.maRamda < 0) {
+            toast.error("MA ramda must be greater than or equal to 0");
+            return;
+        }
+        if (autoTrade.priceDelta <= 0) {
+            toast.error("Price delta must be bigger than 0");
             return;
         }
 

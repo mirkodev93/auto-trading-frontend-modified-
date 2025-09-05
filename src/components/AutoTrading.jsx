@@ -5,16 +5,18 @@ import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 
 const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(0);
-    const [time, setTime] = useState(0);
+    const [maCount, setMaCount] = useState(5);
+    const [interval, setInterval] = useState(1);
+    const [maRamda, setMaRamda] = useState(0);
+    const [priceDelta, setPriceDelta] = useState(0.5);
     const shouldSaveRef = useRef(false);
 
     useEffect(() => {
-        setMinPrice(autoTrade.minPrice);
-        setMaxPrice(autoTrade.maxPrice);
-        setTime(autoTrade.time);
-    }, [autoTrade.minPrice, autoTrade.maxPrice, autoTrade.time]);
+        setMaCount(autoTrade.maCount);
+        setInterval(autoTrade.interval);
+        setMaRamda(autoTrade.maRamda);
+        setPriceDelta(autoTrade.priceDelta);
+    }, [autoTrade.maCount, autoTrade.interval, autoTrade.maRamda, autoTrade.priceDelta]);
 
     useEffect(() => {
         if (shouldSaveRef.current) {
@@ -25,24 +27,35 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
 
     const handleChange = (field, value) => {
 
-        if (field === "minPrice") {
-            setAutoTrade(prev => ({ ...prev, minPrice: value }));
+        if (field === "maCount") {
+            setAutoTrade(prev => ({ ...prev, maCount: value }));
         }
-        if (field === "maxPrice") {
-            setAutoTrade(prev => ({ ...prev, maxPrice: value }));
+        if (field === "interval") {
+            setAutoTrade(prev => ({ ...prev, interval: value }));
         }
-        if (field === "time") {
-            setAutoTrade(prev => ({ ...prev, time: value }));
+        if (field === "maRamda") {
+            setAutoTrade(prev => ({ ...prev, maRamda: value }));
+        }
+        if (field === "priceDelta") {
+            setAutoTrade(prev => ({ ...prev, priceDelta: value }));
         }
     };
 
     const handleAuto = (status) => {
-        if (time <= 0) {
-            toast.error("The time must be bigger than 0");
+        if (maCount <= 0) {
+            toast.error("MA count must be bigger than 0");
             return;
         }
-        if (minPrice > maxPrice) {
-            toast.error("Please set price correctly")
+        if (interval <= 0) {
+            toast.error("Interval must be bigger than 0");
+            return;
+        }
+        if (maRamda < 0) {
+            toast.error("MA ramda must be greater than or equal to 0");
+            return;
+        }
+        if (priceDelta <= 0) {
+            toast.error("Price delta must be bigger than 0");
             return;
         }
 
@@ -64,34 +77,41 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
             </div>
 
             <div className="form-row-inline" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>
-                <label className="form-label-inline">Price Range ($):</label>
-
-                <label className="form-label-inline">Min</label>
+                <label className="form-label-inline">MA count</label>
                 <input
                     disabled={autoTrade.isEnabled}
                     type="number"
                     step="any"
                     className={`form-input compact`}
-                    value={minPrice} onChange={(e) => handleChange("minPrice", e.target.value)}
+                    value={maCount} onChange={(e) => handleChange("maCount", e.target.value)}
                 />
 
-                <label className="form-label-inline">Max</label>
+                <label className="form-label-inline">Candle interval (m)</label>
                 <input
                     disabled={autoTrade.isEnabled}
                     type="number"
                     step="any"
                     className={`form-input compact`}
-                    value={maxPrice} onChange={(e) => handleChange("maxPrice", e.target.value)}
+                    value={interval} onChange={(e) => handleChange("interval", e.target.value)}
                 />
             </div>
             <div className="form-row-inline" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>
-                <label className="form-label-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Period (h):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <label className="form-label-inline">MA ramda</label>
                 <input
                     disabled={autoTrade.isEnabled}
                     type="number"
                     step="any"
                     className={`form-input compact form-input-time`}
-                    value={time} onChange={(e) => handleChange("time", e.target.value)}
+                    value={maRamda} onChange={(e) => handleChange("maRamda", e.target.value)}
+                />
+
+                <label className="form-label-inline">Price delta</label>
+                <input
+                    disabled={autoTrade.isEnabled}
+                    type="number"
+                    step="any"
+                    className={`form-input compact form-input-time`}
+                    value={priceDelta} onChange={(e) => handleChange("priceDelta", e.target.value)}
                 />
             </div>
         </div>

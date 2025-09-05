@@ -1106,11 +1106,11 @@ body {
 }
 
 .form-row-inline {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   align-items: center;
   gap: 16px;
   margin: 0px 10px;
-  flex-wrap: wrap;
 }
 
 .form-label-inline {
