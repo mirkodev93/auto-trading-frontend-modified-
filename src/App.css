@@ -103,7 +103,7 @@ body {
 
   padding: 28px 18px calc(28px + var(--history-h));
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
   min-height: 0;
 
@@ -1096,16 +1096,6 @@ body {
   background: transparent;
 }
 
-/* .form-row {
-  display: flex;
-  justify-content: space-between;
-} */
-
-.rules-scroll {
-  height: 200px;
-  overflow-y: auto;
-}
-
 @media (max-width: 960px) {
   .rules-scroll .form-row {
     grid-template-columns: 1fr 1fr;
@@ -1299,6 +1289,8 @@ body {
   padding: 10px;
   margin: 10px;
   display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 @media (max-width: 1024px) {
@@ -1600,12 +1592,33 @@ body {
 .tab-content {
   padding-top: 12px;
   padding-bottom: 12px;
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.tab-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tab-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tab-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.tab-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .tick {
   width: 30px;
-  margin-top: 45px;
-  margin-right: 5px;
+  margin-top: 35px;
 }
 
 .pix {

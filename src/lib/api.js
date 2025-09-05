@@ -77,3 +77,20 @@ export async function updateTradingStatus(isStart) {
     throw err;
   }
 }
+
+export async function executeSwap(side, percentage) {
+  try {
+    const res = await fetch(`http://localhost:4000/api/trading/swap`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ side, percentage }),
+    });
+    if (!res.ok) {
+      throw new Error(`Failed to execute swap: ${res.status}`);
+    }
+    return res.json();
+  } catch (err) {
+    console.error("execute swap failed:", err);
+    throw err;
+  }
+}

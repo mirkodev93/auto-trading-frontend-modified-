@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import "../App.css";
 import ManualTrading from "./ManualTrading";
 import AutoTrading from "./AutoTrading";
+import SwapTrading from "./SwapTrading";
 import { getTradingStatus, updateTradingStatus } from "../lib/api";
 
 const Trading = ({
@@ -124,6 +125,7 @@ const Trading = ({
                     {mode === "Trading" ? (
                         <div>
                             <AutoTrading autoTrade={autoTrade} setAutoTrade={setAutoTrade} handleSave={handleSave} />
+                            <SwapTrading />
                             <ManualTrading manualTrade={manualTrade} setManualTrade={setManualTrade} handleSave={handleSave} />
                         </div>
                     ) : null}
