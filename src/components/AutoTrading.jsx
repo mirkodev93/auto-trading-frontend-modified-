@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import {toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 
@@ -37,11 +37,11 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
     };
 
     const handleAuto = (status) => {
-        if(time<=0) {
+        if (time <= 0) {
             toast.error("The time must be bigger than 0");
             return;
         }
-        if(minPrice > maxPrice){
+        if (minPrice > maxPrice) {
             toast.error("Please set price correctly")
             return;
         }
@@ -53,7 +53,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
 
     return (
         <div className="fancy-card auto-trade">
-            <button className="auto-label">Auto</button>
+            <button className="manual-label">Auto</button>
             <div className="auto-toggle">
                 <button
                     className={`save-btn ${autoTrade.isEnabled ? "stop-btn" : ""}`}

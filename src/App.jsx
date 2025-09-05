@@ -102,12 +102,12 @@ function App() {
 
   return (
     <>
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="chart-pane">
         <Toggle isFuture={isFuture} setIsFuture={setIsFuture} selectedToken={selectedToken} setSelectedToken={setSelectedToken} />
         <Chart selectedToken={selectedToken} />
       </div>
       <div className="right-panel">
-        <ToastContainer position="top-right" autoClose={3000} />
         <Balance price={price} setPrice={setPrice} balanceArr={balanceArr} setBalanceArr={setBalanceArr} selectedToken={selectedToken} />
         <Trading
           mode={mode}

@@ -21,14 +21,6 @@ const SwapTrading = () => {
         <>
             <div className="fancy-card manual-trade">
                 <button className="manual-label">Swap</button>
-                <div className="auto-toggle">
-                    <button
-                        className="save-btn"
-                        onClick={handleSwap}
-                    >
-                        Swap
-                    </button>
-                </div>
 
                 <div className="swap-form">
                     <label>Direction</label>
@@ -50,6 +42,13 @@ const SwapTrading = () => {
                         value={percentage}
                         onChange={(e) => setPercentage(e.target.value)}
                     />
+
+                    <button
+                        className="save-btn"
+                        onClick={handleSwap}
+                    >
+                        Swap
+                    </button>
                 </div>
             </div>
         </>

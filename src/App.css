@@ -147,24 +147,13 @@ body {
   position: relative;
 }
 
-.auto-label {
-  background: #16a34a;
-  padding: 5px 20px;
-  border-radius: 10px;
-  border: none;
-  top: -12px;
-  left: 40px;
-  position: absolute;
-  color: white;
-}
-
 .manual-label {
   background: #16a34a;
   padding: 5px 20px;
   border-radius: 10px;
   border: none;
   top: -12px;
-  left: 40px;
+  left: 20px;
   position: absolute;
   color: white;
 }
@@ -1527,7 +1516,6 @@ body {
 /* Beautiful Save button */
 .save-btn {
   padding: 10px 20px;
-  margin-left: 30px;
   border-radius: 10px;
   background: linear-gradient(90deg, #16a34a, #22c55e);
   border: none;
@@ -1592,7 +1580,7 @@ body {
 .tab-content {
   padding-top: 12px;
   padding-bottom: 12px;
-  max-height: calc(100vh - 300px);
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
