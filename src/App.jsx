@@ -38,8 +38,7 @@ function App() {
         if (msg.type === "swap_executed") {
           setHistories((prev) => [msg.data.history, ...prev]);
           setBalanceArr(msg.data.balances);
-          setPrice(msg.data.price);
-          setManualTrade((prev) => ({...prev, rules: msg.data.rules}));
+          setManualTrade((prev) => ({ ...prev, rules: msg.data.rules }));
         }
       } catch (err) {
         console.error("WS parse error:", err);
@@ -95,7 +94,7 @@ function App() {
       const s = parseSettingsResponse(data);
       setIsFuture(!!s.future);
       setSelectedToken(s.token ?? "sol");
-      setManualTrade(s.manualTrade ?? {isEnabled: false, rules: []});
+      setManualTrade(s.manualTrade ?? { isEnabled: false, rules: [] });
       setAutoTrade(s.autoTrade ?? {});
     };
     fetchData();
