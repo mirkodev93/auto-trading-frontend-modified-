@@ -1114,16 +1114,12 @@ body {
 }
 
 .form-label-inline {
-  font-size: 16px;
   color: #f3f4f6;
-  font-weight: 700;
   white-space: nowrap;
 }
 
 .form-input.compact {
   flex: 1;
-  min-width: 120px;
-  max-width: 280px;
   padding: 7px 14px;
   font-size: 18px;
   border-radius: 12px;
