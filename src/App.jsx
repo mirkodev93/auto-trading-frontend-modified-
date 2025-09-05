@@ -105,7 +105,7 @@ function App() {
       <ToastContainer position="top-right" autoClose={3000} />
       <div className="chart-pane">
         <Toggle isFuture={isFuture} setIsFuture={setIsFuture} selectedToken={selectedToken} setSelectedToken={setSelectedToken} />
-        <Chart selectedToken={selectedToken} />
+        <Chart selectedToken={selectedToken} maCount={autoTrade.maCount} interval={autoTrade.interval} />
       </div>
       <div className="right-panel">
         <Balance price={price} setPrice={setPrice} balanceArr={balanceArr} setBalanceArr={setBalanceArr} selectedToken={selectedToken} />
