@@ -43,15 +43,29 @@ const TradingViewWidget = ({ selectedToken = "sol", maCount = 5, interval = 1 })
       "watchlist": [],
       "withdateranges": false,
       "compareSymbols": [],
-      "studies": validMaCount > 1 ? [
+      "studies": [
         {
           "id": "MASimple@tv-basicstudies",
           "inputs": {
             "length": validMaCount,
             "source": "close"
           }
+        },
+        {
+          "id": "MASimple@tv-basicstudies",
+          "inputs": {
+            "length": 50,
+            "source": "close"
+          }
+        },
+        {
+          "id": "RSI@tv-basicstudies",
+          "inputs": {
+            "length": 14,
+            "source": "close"
+          }
         }
-      ] : [],
+      ],
       "autosize": true
     });
 
