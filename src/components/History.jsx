@@ -127,15 +127,23 @@ const History = ({ histories, setHistories }) => {
             <div className="trade-time">{entry.time}</div>
             {entry.swapmode ? (
               <div className="trade-action">
-                Swapped {Math.abs(entry.changed_usdt).toFixed(2)} USDT to {Math.abs(entry.changed_sol).toFixed(2)} SOL
-                at {entry.changed_price.toFixed(2)}, current balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(2)} SOL, {(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)} USDT,
-                total: {entry.total?.toFixed?.(2) ?? "0.00"}, fee: {entry.fee?.toFixed?.(2) ?? "0.00"}
+                [{entry.message}],
+                At {entry.changed_price.toFixed(2)},
+                Swapped {Math.abs(entry.changed_usdt).toFixed(2)} USDT to {Math.abs(entry.changed_sol).toFixed(2)} SOL,
+                New balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(2)}({Math.abs(entry.changed_sol).toFixed(2)}) SOL,
+                {' '}{(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)} USDT,
+                total: {entry.total?.toFixed?.(2) ?? "0.00"},
+                fee: {entry.fee?.toFixed?.(2) ?? "0.00"}
               </div>
             ) : (
               <div className="trade-action">
-                Swapped {Math.abs(entry.changed_sol).toFixed(2)} SOL to {Math.abs(entry.changed_usdt).toFixed(2)} USDT
-                at {entry.changed_price.toFixed(2)}, current balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(2)} SOL, {(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)} USDT,
-                total: {entry.total?.toFixed?.(2) ?? "0.00"}, fee: {entry.fee?.toFixed?.(2) ?? "0.00"}
+                [{entry.message}],
+                At {entry.changed_price.toFixed(2)},
+                Swapped {Math.abs(entry.changed_sol).toFixed(2)} SOL to {Math.abs(entry.changed_usdt).toFixed(2)} USDT,
+                New balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(2)} SOL,
+                {' '}{(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)}({Math.abs(entry.changed_usdt).toFixed(2)}) USDT,
+                total: {entry.total?.toFixed?.(2) ?? "0.00"},
+                fee: {entry.fee?.toFixed?.(2) ?? "0.00"}
               </div>
             )}
           </div>
