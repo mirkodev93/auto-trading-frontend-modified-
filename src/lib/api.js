@@ -94,3 +94,19 @@ export async function executeSwap(side, percentage) {
     throw err;
   }
 }
+
+export async function openLog() {
+  try {
+    const res = await fetch(`http://localhost:4000/api/trading/open-log`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!res.ok) {
+      throw new Error(`Failed to open log: ${res.status}`);
+    }
+    return res.json();
+  } catch (err) {
+    console.error("open log failed:", err);
+    throw err;
+  }
+}

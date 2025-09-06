@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
+import { openLog } from "../lib/api";
 
 const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }) => {
     const [maCount, setMaCount] = useState(5);
@@ -90,11 +91,26 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         setAutoTrade(prev => ({ ...prev, isEnabled: status }));
     }
 
+    const handleOpenLog = async () => {
+        try {
+            await openLog();
+        } catch (error) {
+            console.error("Failed to open log:", error);
+            toast.error(error.message || "Failed to open log file");
+        }
+    }
+
 
     return (
         <div className="fancy-card auto-trade">
             <button className="manual-label">Auto</button>
             <div className="auto-toggle">
+                <button
+                    className="save-btn open-log-btn"
+                    onClick={handleOpenLog}
+                >
+                    Open Log
+                </button>
                 <div className="simulation-checkbox">
                     <input
                         type="checkbox"
@@ -117,7 +133,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
 
             {/* Simulation Progress Display */}
             {isSimulation && autoTrade.isEnabled && (
-                <div className="simulation-progress-container" style={{ marginBottom: "15px" }}>
+                <div className="simulation-progress-container">
                     <div className="simulation-progress-label">
                         Simulation Progress: {simulationProgress.toFixed(1)}%
                     </div>

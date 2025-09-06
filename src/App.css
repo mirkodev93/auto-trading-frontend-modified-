@@ -101,7 +101,7 @@ body {
   right: 0;
   width: 50vw;
 
-  padding: 28px 18px calc(28px + var(--history-h));
+  padding: 10px 20px;
   box-sizing: border-box;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -148,18 +148,19 @@ body {
 }
 
 .manual-label {
-  background: #16a34a;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
   padding: 5px 20px;
   border-radius: 10px;
   border: none;
-  top: -12px;
-  left: 20px;
+  top: -18px;
+  left: 18px;
   position: absolute;
   color: white;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 }
 
 .balance-panel {
-  padding: 18px 20px;
+  padding: 20px;
   width: 100%;
 }
 
@@ -167,7 +168,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 6px;
   position: relative;
 }
 
@@ -976,7 +976,7 @@ select.form-input option {
   grid-template-columns: auto 1fr 1fr auto;
   align-items: center;
   gap: 20px;
-  padding: 6px 0;
+  margin-top: 10px;
 }
 
 .price-col {
@@ -1068,11 +1068,11 @@ body {
 
 
 .auto-trade {
-  margin: 20px 20px;
+  margin: 20px;
 }
 
 .manual-trade {
-  margin: 30px 20px 10px 20px;
+  margin: 20px;
 }
 
 .rules-wrap {
@@ -1110,7 +1110,7 @@ body {
   grid-template-columns: 100px 1fr 150px 1fr;
   align-items: center;
   gap: 16px;
-  margin: 0px 10px;
+  margin: 0px 5px;
 }
 
 .form-label-inline {
@@ -1271,8 +1271,8 @@ body {
 }
 
 .swap-form {
-  padding: 10px;
-  margin: 10px;
+  padding: 5px;
+  margin: 5px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1437,16 +1437,6 @@ body {
   overflow-x: hidden !important;
 }
 
-
-
-.right-panel>* {
-  margin-bottom: 24px;
-}
-
-.right-panel>*:last-child {
-  margin-bottom: 0;
-}
-
 :root {
   --chart-w: clamp(520px, 45vw, 1100px);
   --toggle-pad: 12px;
@@ -1494,7 +1484,8 @@ body {
 }
 
 .auto-toggle {
-  margin: 10px 10px 0px 0px;
+  margin: 5px;
+  margin-top: 25px;
   display: flex;
   justify-content: flex-end;
   gap: 20px;
@@ -1575,9 +1566,7 @@ body {
 }
 
 .tab-content {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  max-height: calc(100vh - 200px);
+  height: calc(100vh - 216px);
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
@@ -1625,7 +1614,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 12px 16px;
-  margin: 10px 0;
+  margin: 10px;
 }
 
 .simulation-progress-label {
@@ -1672,4 +1661,8 @@ body {
   100% {
     transform: translateX(100%);
   }
+}
+
+.open-log-btn {
+  margin-right: auto;
 }
