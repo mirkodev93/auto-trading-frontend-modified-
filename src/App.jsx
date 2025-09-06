@@ -19,6 +19,7 @@ function App() {
   const [selectedToken, setSelectedToken] = useState("sol");
   const [manualTrade, setManualTrade] = useState({ isEnabled: false, rules: [] });
   const [autoTrade, setAutoTrade] = useState({ isEnabled: false, maCount: 5, interval: 1, maRamda: 0, priceDelta: 0.5 });
+  const [simulationProgress, setSimulationProgress] = useState(0);
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:4000");
@@ -41,8 +42,13 @@ function App() {
           setManualTrade((prev) => ({ ...prev, rules: msg.data.rules }));
         }
 
+        if (msg.type === "simulation_progress") {
+          setSimulationProgress(msg.data.progress);
+        }
+
         if (msg.type === "simulation_completed") {
           setAutoTrade(msg.data.autoTrade);
+          setSimulationProgress(0); // Reset progress when simulation completes
 
           // Show success notification
           toast.success("Simulation completed successfully! AutoTrade has been disabled.", {
@@ -110,6 +116,13 @@ function App() {
     fetchData();
   }, []);
 
+  // Reset simulation progress when auto trading is disabled or simulation is disabled
+  useEffect(() => {
+    if (!autoTrade.isEnabled || !autoTrade.isSimulation) {
+      setSimulationProgress(0);
+    }
+  }, [autoTrade.isEnabled, autoTrade.isSimulation]);
+
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
@@ -127,6 +140,7 @@ function App() {
           autoTrade={autoTrade}
           setAutoTrade={setAutoTrade}
           handleSave={handleSave}
+          simulationProgress={simulationProgress}
         />
       </div>
       <div className="history-wrapper">

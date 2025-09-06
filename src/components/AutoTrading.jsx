@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../App.css";
 
-const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
+const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }) => {
     const [maCount, setMaCount] = useState(5);
     const [interval, setInterval] = useState(1);
     const [maRamda, setMaRamda] = useState(0);
@@ -114,6 +114,21 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
                     {autoTrade.isEnabled ? "Stop" : "Start"}
                 </button>
             </div>
+
+            {/* Simulation Progress Display */}
+            {isSimulation && autoTrade.isEnabled && (
+                <div className="simulation-progress-container" style={{ marginBottom: "15px" }}>
+                    <div className="simulation-progress-label">
+                        Simulation Progress: {simulationProgress.toFixed(1)}%
+                    </div>
+                    <div className="simulation-progress-bar">
+                        <div
+                            className="simulation-progress-fill"
+                            style={{ width: `${simulationProgress}%` }}
+                        ></div>
+                    </div>
+                </div>
+            )}
 
             <div className="form-row-inline" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>
                 <label className="form-label-inline">MA count</label>

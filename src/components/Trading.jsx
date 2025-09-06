@@ -13,7 +13,8 @@ const Trading = ({
     setManualTrade,
     autoTrade,
     setAutoTrade,
-    handleSave
+    handleSave,
+    simulationProgress
 }) => {
     const [isStart, setIsStart] = useState(true);
 
@@ -132,7 +133,7 @@ const Trading = ({
                 <div className="tab-content">
                     {mode === "Trading" ? (
                         <div>
-                            <AutoTrading autoTrade={autoTrade} setAutoTrade={setAutoTrade} handleSave={handleSave} />
+                            <AutoTrading autoTrade={autoTrade} setAutoTrade={setAutoTrade} handleSave={handleSave} simulationProgress={simulationProgress} />
                             <SwapTrading />
                             <ManualTrading manualTrade={manualTrade} setManualTrade={setManualTrade} handleSave={handleSave} />
                         </div>
