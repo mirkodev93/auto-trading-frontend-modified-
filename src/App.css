@@ -1107,10 +1107,16 @@ body {
 
 .form-row-inline {
   display: grid;
-  grid-template-columns: 100px 1fr 150px 1fr;
+  grid-template-columns: 70px 1fr 130px 2fr;
   align-items: center;
   gap: 16px;
   margin: 0px 10px;
+}
+
+.form-row-inline-price-delta {
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .form-label-inline {
@@ -1606,7 +1612,7 @@ body {
 }
 
 .form-row-inline-simulation {
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 70px 1fr;
 }
 
 /* Simulation Progress Bar Styles */

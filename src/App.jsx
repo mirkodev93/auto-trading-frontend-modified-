@@ -18,7 +18,7 @@ function App() {
   const [isFuture, setIsFuture] = useState(false);
   const [selectedToken, setSelectedToken] = useState("sol");
   const [manualTrade, setManualTrade] = useState({ isEnabled: false, rules: [] });
-  const [autoTrade, setAutoTrade] = useState({ isEnabled: false, maCount: 5, interval: 1, maRamda: 0, priceDelta: 0.5 });
+  const [autoTrade, setAutoTrade] = useState({ isEnabled: false, maCount: 5, interval: 1, maRamda: 0, priceDeltaBuy: 0.5, priceDeltaSell: 0.5 });
   const [simulationProgress, setSimulationProgress] = useState(0);
 
   useEffect(() => {

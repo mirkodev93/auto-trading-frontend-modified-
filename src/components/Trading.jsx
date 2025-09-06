@@ -57,8 +57,12 @@ const Trading = ({
             toast.error("MA ramda must be greater than or equal to 0");
             return;
         }
-        if (autoTrade.priceDelta <= 0) {
-            toast.error("Price delta must be bigger than 0");
+        if (autoTrade.priceDeltaBuy < 0) {
+            toast.error("Price delta buy must be greater than or equal to 0");
+            return;
+        }
+        if (autoTrade.priceDeltaSell < 0) {
+            toast.error("Price delta sell must be greater than or equal to 0");
             return;
         }
 

@@ -9,7 +9,8 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
     const [maCount, setMaCount] = useState(5);
     const [interval, setInterval] = useState(1);
     const [maRamda, setMaRamda] = useState(0);
-    const [priceDelta, setPriceDelta] = useState(0.5);
+    const [priceDeltaBuy, setPriceDeltaBuy] = useState(0.5);
+    const [priceDeltaSell, setPriceDeltaSell] = useState(0.5);
     const [isSimulation, setIsSimulation] = useState(false);
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
@@ -19,11 +20,12 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         setMaCount(autoTrade.maCount);
         setInterval(autoTrade.interval);
         setMaRamda(autoTrade.maRamda);
-        setPriceDelta(autoTrade.priceDelta);
+        setPriceDeltaBuy(autoTrade.priceDeltaBuy);
+        setPriceDeltaSell(autoTrade.priceDeltaSell);
         setIsSimulation(autoTrade.isSimulation || false);
         setStartTime(autoTrade.startTime || '');
         setEndTime(autoTrade.endTime || '');
-    }, [autoTrade.maCount, autoTrade.interval, autoTrade.maRamda, autoTrade.priceDelta, autoTrade.isSimulation, autoTrade.startTime, autoTrade.endTime]);
+    }, [autoTrade.maCount, autoTrade.interval, autoTrade.maRamda, autoTrade.priceDeltaBuy, autoTrade.priceDeltaSell, autoTrade.isSimulation, autoTrade.startTime, autoTrade.endTime]);
 
     useEffect(() => {
         if (shouldSaveRef.current) {
@@ -43,8 +45,11 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         if (field === "maRamda") {
             setAutoTrade(prev => ({ ...prev, maRamda: value }));
         }
-        if (field === "priceDelta") {
-            setAutoTrade(prev => ({ ...prev, priceDelta: value }));
+        if (field === "priceDeltaBuy") {
+            setAutoTrade(prev => ({ ...prev, priceDeltaBuy: value }));
+        }
+        if (field === "priceDeltaSell") {
+            setAutoTrade(prev => ({ ...prev, priceDeltaSell: value }));
         }
         if (field === "isSimulation") {
             setAutoTrade(prev => ({ ...prev, isSimulation: value }));
@@ -70,8 +75,12 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
             toast.error("MA ramda must be greater than or equal to 0");
             return;
         }
-        if (priceDelta <= 0) {
-            toast.error("Price delta must be bigger than 0");
+        if (priceDeltaBuy < 0) {
+            toast.error("Price delta buy must be greater than or equal to 0");
+            return;
+        }
+        if (priceDeltaSell < 0) {
+            toast.error("Price delta sell must be greater than or equal to 0");
             return;
         }
         if (isSimulation && !startTime) {
@@ -176,13 +185,24 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                 />
 
                 <label className="form-label-inline">Price delta</label>
-                <input
-                    disabled={autoTrade.isEnabled}
-                    type="number"
-                    step="any"
-                    className={`form-input compact form-input-time`}
-                    value={priceDelta} onChange={(e) => handleChange("priceDelta", e.target.value)}
-                />
+                <div className="form-row-inline-price-delta">
+                    <label className="form-label-inline">Buy</label>
+                    <input
+                        disabled={autoTrade.isEnabled}
+                        type="number"
+                        step="any"
+                        className={`form-input compact form-input-time`}
+                        value={priceDeltaBuy} onChange={(e) => handleChange("priceDeltaBuy", e.target.value)}
+                    />
+                    <label className="form-label-inline">Sell</label>
+                    <input
+                        disabled={autoTrade.isEnabled}
+                        type="number"
+                        step="any"
+                        className={`form-input compact form-input-time`}
+                        value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                    />
+                </div>
             </div>
 
             {isSimulation && (
