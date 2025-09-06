@@ -1072,7 +1072,7 @@ body {
 }
 
 .manual-trade {
-  margin: 20px;
+  margin: 30px 20px 20px 20px;
 }
 
 .rules-wrap {
@@ -1110,20 +1110,21 @@ body {
   grid-template-columns: 100px 1fr 150px 1fr;
   align-items: center;
   gap: 16px;
-  margin: 0px 5px;
+  margin: 0px 10px;
 }
 
 .form-label-inline {
   color: #f3f4f6;
   white-space: nowrap;
+  text-align: left;
 }
 
 .form-input.compact {
   flex: 1;
   padding: 7px 14px;
-  font-size: 18px;
-  border-radius: 12px;
-  margin: 5px 0px
+  font-size: 14px;
+  border-radius: 7px;
+  margin: 3px 0px
 }
 
 .form-input-time {
@@ -1484,7 +1485,7 @@ body {
 }
 
 .auto-toggle {
-  margin: 5px;
+  margin: 10px;
   margin-top: 25px;
   display: flex;
   justify-content: flex-end;
@@ -1665,4 +1666,18 @@ body {
 
 .open-log-btn {
   margin-right: auto;
+  background: linear-gradient(90deg, #f59e0b, #d97706) !important;
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.open-log-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(245, 158, 11, 0.4) !important;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b) !important;
+}
+
+.open-log-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25) !important;
 }
