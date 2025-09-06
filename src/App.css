@@ -1107,7 +1107,7 @@ body {
 
 .form-row-inline {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 100px 1fr 150px 1fr;
   align-items: center;
   gap: 16px;
   margin: 0px 10px;
@@ -1497,6 +1497,7 @@ body {
   margin: 10px 10px 0px 0px;
   display: flex;
   justify-content: flex-end;
+  gap: 20px;
 }
 
 .munual-toggle {
@@ -1607,4 +1608,13 @@ body {
 
 .pix {
   width: 100%;
+}
+
+.simulation-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.form-row-inline-simulation {
+  grid-template-columns: 100px 1fr;
 }

@@ -9,6 +9,9 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
     const [interval, setInterval] = useState(1);
     const [maRamda, setMaRamda] = useState(0);
     const [priceDelta, setPriceDelta] = useState(0.5);
+    const [isSimulation, setIsSimulation] = useState(false);
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
     const shouldSaveRef = useRef(false);
 
     useEffect(() => {
@@ -16,7 +19,10 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
         setInterval(autoTrade.interval);
         setMaRamda(autoTrade.maRamda);
         setPriceDelta(autoTrade.priceDelta);
-    }, [autoTrade.maCount, autoTrade.interval, autoTrade.maRamda, autoTrade.priceDelta]);
+        setIsSimulation(autoTrade.isSimulation || false);
+        setStartTime(autoTrade.startTime || '');
+        setEndTime(autoTrade.endTime || '');
+    }, [autoTrade.maCount, autoTrade.interval, autoTrade.maRamda, autoTrade.priceDelta, autoTrade.isSimulation, autoTrade.startTime, autoTrade.endTime]);
 
     useEffect(() => {
         if (shouldSaveRef.current) {
@@ -39,6 +45,15 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
         if (field === "priceDelta") {
             setAutoTrade(prev => ({ ...prev, priceDelta: value }));
         }
+        if (field === "isSimulation") {
+            setAutoTrade(prev => ({ ...prev, isSimulation: value }));
+        }
+        if (field === "startTime") {
+            setAutoTrade(prev => ({ ...prev, startTime: value }));
+        }
+        if (field === "endTime") {
+            setAutoTrade(prev => ({ ...prev, endTime: value }));
+        }
     };
 
     const handleAuto = (status) => {
@@ -58,6 +73,18 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
             toast.error("Price delta must be bigger than 0");
             return;
         }
+        if (isSimulation && !startTime) {
+            toast.error("Start time is required when simulation is enabled");
+            return;
+        }
+        if (isSimulation && !endTime) {
+            toast.error("End time is required when simulation is enabled");
+            return;
+        }
+        if (isSimulation && startTime && endTime && new Date(startTime) >= new Date(endTime)) {
+            toast.error("Start time must be before end time");
+            return;
+        }
 
         shouldSaveRef.current = true;
         setAutoTrade(prev => ({ ...prev, isEnabled: status }));
@@ -68,6 +95,18 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
         <div className="fancy-card auto-trade">
             <button className="manual-label">Auto</button>
             <div className="auto-toggle">
+                <div className="simulation-checkbox">
+                    <input
+                        type="checkbox"
+                        id="simulation"
+                        disabled={autoTrade.isEnabled}
+                        checked={isSimulation}
+                        onChange={(e) => {
+                            handleChange("isSimulation", e.target.checked);
+                        }}
+                    />
+                    <label htmlFor="simulation">Simulation</label>
+                </div>
                 <button
                     className={`save-btn ${autoTrade.isEnabled ? "stop-btn" : ""}`}
                     onClick={() => handleAuto(!autoTrade.isEnabled)}
@@ -114,6 +153,36 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave }) => {
                     value={priceDelta} onChange={(e) => handleChange("priceDelta", e.target.value)}
                 />
             </div>
+
+            {isSimulation && (
+                <>
+                    <div className="form-row-inline form-row-inline-simulation" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>
+                        <label className="form-label-inline">Start time</label>
+                        <input
+                            disabled={autoTrade.isEnabled}
+                            type="datetime-local"
+                            className="form-input compact"
+                            value={startTime}
+                            onChange={(e) => {
+                                handleChange("startTime", e.target.value);
+                            }}
+                        />
+                    </div>
+
+                    <div className="form-row-inline form-row-inline-simulation" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>
+                        <label className="form-label-inline">End time</label>
+                        <input
+                            disabled={autoTrade.isEnabled}
+                            type="datetime-local"
+                            className="form-input compact"
+                            value={endTime}
+                            onChange={(e) => {
+                                handleChange("endTime", e.target.value);
+                            }}
+                        />
+                    </div>
+                </>
+            )}
         </div>
     );
 };
