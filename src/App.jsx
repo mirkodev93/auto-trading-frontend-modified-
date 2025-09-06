@@ -40,6 +40,16 @@ function App() {
           setBalanceArr(msg.data.balances);
           setManualTrade((prev) => ({ ...prev, rules: msg.data.rules }));
         }
+
+        if (msg.type === "simulation_completed") {
+          setAutoTrade(msg.data.autoTrade);
+
+          // Show success notification
+          toast.success("Simulation completed successfully! AutoTrade has been disabled.", {
+            autoClose: 5000,
+            position: "top-right"
+          });
+        }
       } catch (err) {
         console.error("WS parse error:", err);
       }
