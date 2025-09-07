@@ -464,7 +464,7 @@ select.form-input option {
   gap: 12px;
   margin-bottom: 8px;
   font-family: 'Courier New', monospace;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.4;
 }
 
@@ -479,9 +479,18 @@ select.form-input option {
   flex-shrink: 0;
 }
 
-.trade-action {
+.trade-action-expanded {
   color: #e5e7eb;
   flex: 1;
+  display: grid;
+  grid-template-columns: 2fr 3fr 2.5fr 2fr 2fr;
+  gap: 4px;
+  align-items: center;
+}
+
+.trade-action {
+  color: #e5e7eb;
+  display: grid;
 }
 
 .balance-summary {
@@ -1671,7 +1680,6 @@ body {
 }
 
 .open-log-btn {
-  margin-right: auto;
   background: linear-gradient(90deg, #f59e0b, #d97706) !important;
   box-shadow: 0 6px 18px rgba(245, 158, 11, 0.3) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;

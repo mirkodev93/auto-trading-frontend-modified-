@@ -109,6 +109,15 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         }
     }
 
+    const handleOpenAutoLog = async () => {
+        try {
+            await openLog('auto');
+        } catch (error) {
+            console.error("Failed to open auto log:", error);
+            toast.error(error.message || "Failed to open auto log file");
+        }
+    }
+
 
     return (
         <div className="fancy-card auto-trade">
@@ -118,7 +127,14 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                     className="save-btn open-log-btn"
                     onClick={handleOpenLog}
                 >
-                    Open Log
+                    Open Simulation Log
+                </button>
+                <button
+                    className="save-btn open-log-btn"
+                    style={{ marginRight: "auto" }}
+                    onClick={handleOpenAutoLog}
+                >
+                    Open Auto Log
                 </button>
                 <div className="simulation-checkbox">
                     <input

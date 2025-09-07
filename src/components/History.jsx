@@ -108,7 +108,7 @@ const History = ({ histories, setHistories }) => {
             className={`history-btn ${expanded ? '' : 'primary'}`}
             onClick={handleToggleExpand}
           >
-            {expanded ? 'Close' : 'See detail'}
+            {expanded ? 'Close' : 'Show detail'}
           </button>
 
           <button
@@ -126,24 +126,20 @@ const History = ({ histories, setHistories }) => {
           <div className="trade-entry" key={index}>
             <div className="trade-time">{entry.time}</div>
             {entry.swapmode ? (
-              <div className="trade-action">
-                [{entry.message}],
-                At {entry.changed_price.toFixed(2)},
-                Swapped {Math.abs(entry.changed_usdt).toFixed(2)} USDT to {Math.abs(entry.changed_sol).toFixed(2)} SOL,
-                New balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(2)}({Math.abs(entry.changed_sol).toFixed(2)}) SOL,
-                {' '}{(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)} USDT,
-                total: {entry.total?.toFixed?.(2) ?? "0.00"},
-                fee: {entry.fee?.toFixed?.(2) ?? "0.00"}
+              <div className={expanded ? "trade-action-expanded" : "trade-action"}>
+                <span>[{entry.message || ''}]</span>
+                <span>At {entry.changed_price.toFixed(2)}, Swapped {Math.abs(entry.changed_usdt).toFixed(2)} USDT to {Math.abs(entry.changed_sol).toFixed(2)} SOL</span>
+                <span>New balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(2)}({Math.abs(entry.changed_sol).toFixed(2)}) SOL</span>
+                <span>{(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)} USDT</span>
+                <span>total: {entry.total?.toFixed?.(2) ?? "0.00"}, fee: {entry.fee?.toFixed?.(2) ?? "0.00"}</span>
               </div>
             ) : (
-              <div className="trade-action">
-                [{entry.message}],
-                At {entry.changed_price.toFixed(2)},
-                Swapped {Math.abs(entry.changed_sol).toFixed(2)} SOL to {Math.abs(entry.changed_usdt).toFixed(2)} USDT,
-                New balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(2)} SOL,
-                {' '}{(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)}({Math.abs(entry.changed_usdt).toFixed(2)}) USDT,
-                total: {entry.total?.toFixed?.(2) ?? "0.00"},
-                fee: {entry.fee?.toFixed?.(2) ?? "0.00"}
+              <div className={expanded ? "trade-action-expanded" : "trade-action"}>
+                <span>[{entry.message || ''}]</span>
+                <span>At {entry.changed_price.toFixed(2)}, Swapped {Math.abs(entry.changed_sol).toFixed(2)} SOL to {Math.abs(entry.changed_usdt).toFixed(2)} USDT</span>
+                <span>New balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(2)} SOL</span>
+                <span>{(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)}({Math.abs(entry.changed_usdt).toFixed(2)}) USDT</span>
+                <span>total: {entry.total?.toFixed?.(2) ?? "0.00"}, fee: {entry.fee?.toFixed?.(2) ?? "0.00"}</span>
               </div>
             )}
           </div>
