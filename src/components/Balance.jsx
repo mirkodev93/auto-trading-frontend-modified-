@@ -48,7 +48,7 @@ const Balance = ({ price, setPrice, balanceArr, setBalanceArr, selectedToken = "
                 <div className="col price-col">{Number(price).toFixed(2)}</div>
                 {visibleBalances.map((b, i) => (
                     <div className="col token-col fancy-card" key={b?.token ?? i}>
-                        <span className="chip-value">{(b?.value ?? 0).toFixed(2)}</span>
+                        <span className="chip-value">{(b?.value ?? 0).toFixed(b.token === 'sol' ? 6 : 2)}</span>
                         <span className="balance-col-title">{(b?.token ?? '—').toUpperCase()}</span>
                     </div>
                 ))}
