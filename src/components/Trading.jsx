@@ -43,52 +43,6 @@ const Trading = ({
         }
     }
 
-    const handleSaveClick = async () => {
-        // Validate Auto Trade settings
-        if (autoTrade.maCount <= 0) {
-            toast.error("MA count must be bigger than 0");
-            return;
-        }
-        if (autoTrade.interval <= 0) {
-            toast.error("Interval must be bigger than 0");
-            return;
-        }
-        if (autoTrade.maRamda < 0) {
-            toast.error("MA ramda must be greater than or equal to 0");
-            return;
-        }
-        if (autoTrade.priceDeltaBuy < 0) {
-            toast.error("Price delta buy must be greater than or equal to 0");
-            return;
-        }
-        if (autoTrade.priceDeltaSell < 0) {
-            toast.error("Price delta sell must be greater than or equal to 0");
-            return;
-        }
-
-        // Validate Manual Trade settings
-        let hasError = false;
-        manualTrade.rules.forEach((rule, index) => {
-            if (rule.percentage <= 0) {
-                toast.error(`Rule ${index + 1}: Percentage must be bigger than 0`);
-                hasError = true;
-            }
-            if (rule.setpoint == null || rule.setpoint === undefined || rule.setpoint === "") {
-                toast.error(`Rule ${index + 1}: Setpoint can't be null`);
-                hasError = true;
-            }
-        });
-        if (hasError) return;
-
-        try {
-            await handleSave();
-            toast.success("Settings saved successfully");
-        } catch (err) {
-            console.error(err);
-            toast.error("Failed to save settings");
-        }
-    }
-
     return (
         <div className="tabs-wrap fancy-card">
             <div className="tabs">
@@ -119,9 +73,6 @@ const Trading = ({
                             Stop
                         </button>
                     )}
-                    {/*<button type="button" className="save-btn" onClick={handleSaveClick}>
-                        Save
-                    </button>*/}
                 </div>
             </div>
             {!isStart ? (

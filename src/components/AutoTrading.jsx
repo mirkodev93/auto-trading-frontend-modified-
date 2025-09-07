@@ -75,10 +75,6 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
             toast.error("MA ramda must be greater than or equal to 0");
             return;
         }
-        if (priceDeltaBuy < 0) {
-            toast.error("Price delta buy must be greater than or equal to 0");
-            return;
-        }
         if (priceDeltaSell < 0) {
             toast.error("Price delta sell must be greater than or equal to 0");
             return;
