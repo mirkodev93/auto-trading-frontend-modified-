@@ -14,7 +14,6 @@ const Toggle = ({ isFuture, setIsFuture, selectedToken = "sol", setSelectedToken
         alignItems: "center",
         justifyContent: "flex-start",
         gap: "12px",
-        marginTop: "50px",
       }}
     >
       {/* Toggle switch */}
