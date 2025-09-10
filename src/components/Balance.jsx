@@ -9,14 +9,14 @@ const Balance = ({ histories, autoTrade, price, balanceArr, setBalanceArr, selec
         if (histories.length == 0)
             return;
         if (histories[0].swapmode) {
-            setExpectPrice("Expected Sell Price: " + (histories[0].changed_price + autoTrade.priceDeltaSell));
+            setExpectPrice("Expected Sell Price: " + (histories[0].changed_price + autoTrade.priceDeltaSell).toFixed(2));
         } else {
             if (autoTrade.priceDeltaBuy > 0)
                 setExpectPrice("Expected Buy Price: NaN");
             else
-                setExpectPrice("Expected Buy Price: " + (histories[0].changed_price + autoTrade.priceDeltaBuy));
+                setExpectPrice("Expected Buy Price: " + (histories[0].changed_price + autoTrade.priceDeltaBuy).toFixed(2));
         }
-    }, [histories]);
+    }, [histories, autoTrade]);
 
     useEffect(() => {
         const fetchBalances = async () => {
