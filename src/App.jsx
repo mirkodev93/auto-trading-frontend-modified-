@@ -131,7 +131,7 @@ function App() {
         <Chart selectedToken={selectedToken} maCount={autoTrade.maCount} interval={autoTrade.interval} />
       </div>
       <div className="right-panel">
-        <Balance price={price} setPrice={setPrice} balanceArr={balanceArr} setBalanceArr={setBalanceArr} selectedToken={selectedToken} />
+        <Balance histories={histories} autoTrade={autoTrade} price={price} balanceArr={balanceArr} setBalanceArr={setBalanceArr} selectedToken={selectedToken} />
         <Trading
           mode={mode}
           setMode={setMode}

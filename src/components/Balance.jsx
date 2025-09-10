@@ -1,8 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { getBalances } from '../lib/api';
 
-const Balance = ({ price, setPrice, balanceArr, setBalanceArr, selectedToken = "sol" }) => {
+const Balance = ({ histories, autoTrade, price, balanceArr, setBalanceArr, selectedToken = "sol" }) => {
+    const [expectPrice, setExpectPrice] = useState("");
+
+    useEffect(() => {
+        if (histories.length == 0)
+            return;
+        if (histories[0].swapmode) {
+            setExpectPrice("Expected Sell Price: " + (histories[0].changed_price + autoTrade.priceDeltaSell));
+        } else {
+            if (autoTrade.priceDeltaBuy > 0)
+                setExpectPrice("Expected Buy Price: NaN");
+            else
+                setExpectPrice("Expected Buy Price: " + (histories[0].changed_price + autoTrade.priceDeltaBuy));
+        }
+    }, [histories]);
+
     useEffect(() => {
         const fetchBalances = async () => {
             try {
@@ -40,6 +55,9 @@ const Balance = ({ price, setPrice, balanceArr, setBalanceArr, selectedToken = "
                 <div className="balance-title">
                     <span className="live-dot" aria-hidden="true"></span>
                     Current Price
+                </div>
+                <div>
+                    {expectPrice}
                 </div>
             </div>
 
