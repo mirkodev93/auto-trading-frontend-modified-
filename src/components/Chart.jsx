@@ -55,7 +55,7 @@ const TradingViewWidget = ({ selectedToken = "sol", maCount = 5, interval = 1 })
           "id": "MASimple@tv-basicstudies",
           "inputs": {
             "length": 50,
-            "source": "close"
+            "source": "high"
           }
         },
         {
