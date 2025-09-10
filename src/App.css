@@ -184,8 +184,6 @@ body {
   }
 }
 
-
-
 @keyframes flashUp {
   from {
     color: #22c55e;
@@ -456,9 +454,6 @@ select.form-input option {
     text-align: center;
     margin-bottom: 6px;
   }
-
-
-
 }
 
 .history-header {
@@ -656,8 +651,6 @@ select.form-input option {
   }
 }
 
-
-
 .balance-line {
   display: grid;
   grid-template-columns: auto 1fr 1fr auto;
@@ -693,8 +686,6 @@ select.form-input option {
   font-weight: 700;
   font-size: 18px;
 }
-
-
 
 .total-col {
   font-weight: 700;
@@ -820,10 +811,6 @@ body {
   border-radius: 12px;
 }
 
-
-
-
-
 @media (max-width: 640px) {
   :root {
     --history-left-h: 200px;
@@ -834,7 +821,6 @@ body {
   width: min(44vw, 520px);
   max-width: 520px;
 }
-
 
 .swap-form {
   padding: 5px;
