@@ -116,7 +116,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
 
 
     return (
-        <div className="fancy-card auto-trade">
+        <div className="fancy-card manual-trade">
             <button className="manual-label">Auto</button>
             <div className="auto-toggle">
                 <button

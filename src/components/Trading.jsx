@@ -49,19 +49,19 @@ const Trading = ({
                 <div>
                     <button
                         type="button"
-                        className={`tab ${mode === "Trading" ? "active" : ""}`}
-                        onClick={() => switchMode("Trading")}
-                        aria-pressed={mode === "Trading"}
+                        className={`tab ${mode === "Auto" ? "active" : ""}`}
+                        onClick={() => switchMode("Auto")}
+                        aria-pressed={mode === "Auto"}
                     >
-                        Trading
+                        Auto
                     </button>
                     <button
                         type="button"
-                        className={`tab ${mode === "Simulation" ? "active" : ""}`}
-                        onClick={() => switchMode("Simulation")}
-                        aria-pressed={mode === "Simulation"}
+                        className={`tab ${mode === "Manual" ? "active" : ""}`}
+                        onClick={() => switchMode("Manual")}
+                        aria-pressed={mode === "Manual"}
                     >
-                        Simulation
+                        Manual
                     </button>
                 </div>
                 <div>
@@ -86,9 +86,13 @@ const Trading = ({
                 </div>
             ) : (
                 <div className="tab-content">
-                    {mode === "Trading" ? (
+                    {mode === "Auto" ? (
                         <div>
                             <AutoTrading autoTrade={autoTrade} setAutoTrade={setAutoTrade} handleSave={handleSave} simulationProgress={simulationProgress} />
+                        </div>
+                    ) : null}
+                    {mode === "Manual" ? (
+                        <div>
                             <SwapTrading />
                             <ManualTrading manualTrade={manualTrade} setManualTrade={setManualTrade} handleSave={handleSave} />
                         </div>

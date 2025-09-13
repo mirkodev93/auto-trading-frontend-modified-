@@ -12,7 +12,7 @@ import "./App.css";
 
 function App() {
   const [price, setPrice] = useState(0);
-  const [mode, setMode] = useState("Trading");
+  const [mode, setMode] = useState("Auto");
   const [balanceArr, setBalanceArr] = useState([]);
   const [histories, setHistories] = useState([]);
   const [isFuture, setIsFuture] = useState(false);
