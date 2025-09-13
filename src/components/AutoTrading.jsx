@@ -9,23 +9,52 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
     const [maCount, setMaCount] = useState(5);
     const [interval, setInterval] = useState(1);
     const [maRamda, setMaRamda] = useState(0);
-    const [priceDeltaBuy, setPriceDeltaBuy] = useState(0.5);
-    const [priceDeltaSell, setPriceDeltaSell] = useState(0.5);
     const [isSimulation, setIsSimulation] = useState(false);
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
+
+    // Up Trend state
+    const [upTrendUseMAHigh, setUpTrendUseMAHigh] = useState(false);
+    const [upTrendMaCount, setUpTrendMaCount] = useState(50);
+    const [upTrendContinuousCount, setUpTrendContinuousCount] = useState(3);
+    const [upTrendContinuousRamda, setUpTrendContinuousRamda] = useState(0.5);
+    const [upTrendPriceDeltaBuy, setUpTrendPriceDeltaBuy] = useState(10000);
+    const [upTrendPriceDeltaSell, setUpTrendPriceDeltaSell] = useState(0.1);
+
+    // Down Trend state
+    const [downTrendUseMAHigh, setDownTrendUseMAHigh] = useState(false);
+    const [downTrendMaCount, setDownTrendMaCount] = useState(50);
+    const [downTrendContinuousCount, setDownTrendContinuousCount] = useState(3);
+    const [downTrendContinuousRamda, setDownTrendContinuousRamda] = useState(0.5);
+    const [downTrendPriceDeltaBuy, setDownTrendPriceDeltaBuy] = useState(-0.1);
+    const [downTrendPriceDeltaSell, setDownTrendPriceDeltaSell] = useState(-10000);
+
     const shouldSaveRef = useRef(false);
 
     useEffect(() => {
-        setMaCount(autoTrade.maCount);
-        setInterval(autoTrade.interval);
-        setMaRamda(autoTrade.maRamda);
-        setPriceDeltaBuy(autoTrade.priceDeltaBuy);
-        setPriceDeltaSell(autoTrade.priceDeltaSell);
+        setMaCount(autoTrade.maCount || 5);
+        setInterval(autoTrade.interval || 1);
+        setMaRamda(autoTrade.maRamda || 0);
         setIsSimulation(autoTrade.isSimulation || false);
         setStartTime(autoTrade.startTime || '');
         setEndTime(autoTrade.endTime || '');
-    }, [autoTrade.maCount, autoTrade.interval, autoTrade.maRamda, autoTrade.priceDeltaBuy, autoTrade.priceDeltaSell, autoTrade.isSimulation, autoTrade.startTime, autoTrade.endTime]);
+
+        // Initialize Up Trend settings
+        setUpTrendUseMAHigh(autoTrade.upTrend?.useMAHigh || false);
+        setUpTrendMaCount(autoTrade.upTrend?.maCount || 50);
+        setUpTrendContinuousCount(autoTrade.upTrend?.continuousUp?.count || 3);
+        setUpTrendContinuousRamda(autoTrade.upTrend?.continuousUp?.ramda || 0.5);
+        setUpTrendPriceDeltaBuy(autoTrade.upTrend?.priceDelta?.buy || 10000);
+        setUpTrendPriceDeltaSell(autoTrade.upTrend?.priceDelta?.sell || 0.1);
+
+        // Initialize Down Trend settings
+        setDownTrendUseMAHigh(autoTrade.downTrend?.useMAHigh || false);
+        setDownTrendMaCount(autoTrade.downTrend?.maCount || 50);
+        setDownTrendContinuousCount(autoTrade.downTrend?.continuousDown?.count || 3);
+        setDownTrendContinuousRamda(autoTrade.downTrend?.continuousDown?.ramda || 0.5);
+        setDownTrendPriceDeltaBuy(autoTrade.downTrend?.priceDelta?.buy || -0.1);
+        setDownTrendPriceDeltaSell(autoTrade.downTrend?.priceDelta?.sell || -10000);
+    }, [autoTrade]);
 
     useEffect(() => {
         if (shouldSaveRef.current) {
@@ -34,32 +63,63 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         }
     }, [autoTrade.isEnabled, handleSave]);
 
-    const handleChange = (field, value) => {
+    // Helper function to update nested object properties
+    const updateNestedProperty = (obj, path, value) => {
+        const keys = path.split('.');
+        const result = { ...obj };
+        let current = result;
 
-        if (field === "maCount") {
-            setAutoTrade(prev => ({ ...prev, maCount: value }));
+        for (let i = 0; i < keys.length - 1; i++) {
+            const key = keys[i];
+            current[key] = { ...current[key] };
+            current = current[key];
         }
-        if (field === "interval") {
-            setAutoTrade(prev => ({ ...prev, interval: value }));
-        }
-        if (field === "maRamda") {
-            setAutoTrade(prev => ({ ...prev, maRamda: value }));
-        }
-        if (field === "priceDeltaBuy") {
-            setAutoTrade(prev => ({ ...prev, priceDeltaBuy: value }));
-        }
-        if (field === "priceDeltaSell") {
-            setAutoTrade(prev => ({ ...prev, priceDeltaSell: value }));
-        }
-        if (field === "isSimulation") {
-            setAutoTrade(prev => ({ ...prev, isSimulation: value }));
-        }
-        if (field === "startTime") {
-            setAutoTrade(prev => ({ ...prev, startTime: value }));
-        }
-        if (field === "endTime") {
-            setAutoTrade(prev => ({ ...prev, endTime: value }));
-        }
+
+        current[keys[keys.length - 1]] = value;
+        return result;
+    };
+
+    const handleChange = (field, value) => {
+        // Field mapping for direct properties
+        const directFields = {
+            maCount: 'maCount',
+            interval: 'interval',
+            maRamda: 'maRamda',
+            isSimulation: 'isSimulation',
+            startTime: 'startTime',
+            endTime: 'endTime'
+        };
+
+        // Field mapping for nested properties
+        const nestedFields = {
+            upTrendUseMAHigh: 'upTrend.useMAHigh',
+            upTrendMaCount: 'upTrend.maCount',
+            upTrendContinuousCount: 'upTrend.continuousUp.count',
+            upTrendContinuousRamda: 'upTrend.continuousUp.ramda',
+            upTrendPriceDeltaBuy: 'upTrend.priceDelta.buy',
+            upTrendPriceDeltaSell: 'upTrend.priceDelta.sell',
+            downTrendUseMAHigh: 'downTrend.useMAHigh',
+            downTrendMaCount: 'downTrend.maCount',
+            downTrendContinuousCount: 'downTrend.continuousDown.count',
+            downTrendContinuousRamda: 'downTrend.continuousDown.ramda',
+            downTrendPriceDeltaBuy: 'downTrend.priceDelta.buy',
+            downTrendPriceDeltaSell: 'downTrend.priceDelta.sell'
+        };
+
+        setAutoTrade(prev => {
+            // Handle direct properties
+            if (directFields[field]) {
+                return { ...prev, [directFields[field]]: value };
+            }
+
+            // Handle nested properties
+            if (nestedFields[field]) {
+                return updateNestedProperty(prev, nestedFields[field], value);
+            }
+
+            // Return unchanged if field not found
+            return prev;
+        });
     };
 
     const handleAuto = (status) => {
@@ -75,10 +135,35 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
             toast.error("MA ramda must be greater than or equal to 0");
             return;
         }
-        if (priceDeltaSell < 0) {
-            toast.error("Price delta sell must be greater than or equal to 0");
+
+        // Validate Up Trend settings
+        if (upTrendMaCount <= 0) {
+            toast.error("Up Trend MA count must be bigger than 0");
             return;
         }
+        if (upTrendContinuousCount <= 0) {
+            toast.error("Up Trend continuous count must be bigger than 0");
+            return;
+        }
+        if (upTrendContinuousRamda < 0) {
+            toast.error("Up Trend continuous ramda must be greater than or equal to 0");
+            return;
+        }
+
+        // Validate Down Trend settings
+        if (downTrendMaCount <= 0) {
+            toast.error("Down Trend MA count must be bigger than 0");
+            return;
+        }
+        if (downTrendContinuousCount <= 0) {
+            toast.error("Down Trend continuous count must be bigger than 0");
+            return;
+        }
+        if (downTrendContinuousRamda < 0) {
+            toast.error("Down Trend continuous ramda must be greater than or equal to 0");
+            return;
+        }
+
         if (isSimulation && !startTime) {
             toast.error("Start time is required when simulation is enabled");
             return;
@@ -173,6 +258,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                     disabled={autoTrade.isEnabled}
                     type="number"
                     step="any"
+                    min="1"
                     className={`form-input compact`}
                     value={maCount} onChange={(e) => handleChange("maCount", e.target.value)}
                 />
@@ -182,6 +268,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                     disabled={autoTrade.isEnabled}
                     type="number"
                     step="any"
+                    min="1"
                     className={`form-input compact`}
                     value={interval} onChange={(e) => handleChange("interval", e.target.value)}
                 />
@@ -190,6 +277,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                     disabled={autoTrade.isEnabled}
                     type="number"
                     step="any"
+                    min="0"
                     className={`form-input compact`}
                     value={maRamda} onChange={(e) => handleChange("maRamda", e.target.value)}
                 />
@@ -201,22 +289,24 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                         <div>
                             <input
                                 type="checkbox"
-                                id="useMAHigh"
+                                id="upTrendUseMAHigh"
                                 disabled={autoTrade.isEnabled}
-                                checked={isSimulation}
+                                checked={upTrendUseMAHigh}
                                 onChange={(e) => {
-                                    handleChange("isSimulation", e.target.checked);
+                                    handleChange("upTrendUseMAHigh", e.target.checked);
                                 }}
                             />
-                            <label htmlFor="simulation">Use MA High</label>
+                            <label htmlFor="upTrendUseMAHigh">Use MA High</label>
                             <div className="form-row-inline">
                                 <label className="form-label-inline">MA Count</label>
                                 <input
                                     disabled={autoTrade.isEnabled}
                                     type="number"
                                     step="any"
+                                    min="1"
                                     className={`form-input compact`}
-                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                    value={upTrendMaCount}
+                                    onChange={(e) => handleChange("upTrendMaCount", e.target.value)}
                                 />
                             </div>
                         </div>
@@ -228,8 +318,10 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                                     disabled={autoTrade.isEnabled}
                                     type="number"
                                     step="any"
+                                    min="1"
                                     className={`form-input compact`}
-                                    value={priceDeltaBuy} onChange={(e) => handleChange("priceDeltaBuy", e.target.value)}
+                                    value={upTrendContinuousCount}
+                                    onChange={(e) => handleChange("upTrendContinuousCount", e.target.value)}
                                 />
                             </div>
                             <div className="form-row-inline">
@@ -238,8 +330,10 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                                     disabled={autoTrade.isEnabled}
                                     type="number"
                                     step="any"
+                                    min="0"
                                     className={`form-input compact`}
-                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                    value={upTrendContinuousRamda}
+                                    onChange={(e) => handleChange("upTrendContinuousRamda", e.target.value)}
                                 />
                             </div>
                         </div>
@@ -252,7 +346,8 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                                     type="number"
                                     step="any"
                                     className={`form-input compact`}
-                                    value={priceDeltaBuy} onChange={(e) => handleChange("priceDeltaBuy", e.target.value)}
+                                    value={upTrendPriceDeltaBuy}
+                                    onChange={(e) => handleChange("upTrendPriceDeltaBuy", e.target.value)}
                                 />
                             </div>
                             <div className="form-row-inline">
@@ -262,7 +357,8 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                                     type="number"
                                     step="any"
                                     className={`form-input compact`}
-                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                    value={upTrendPriceDeltaSell}
+                                    onChange={(e) => handleChange("upTrendPriceDeltaSell", e.target.value)}
                                 />
                             </div>
                         </div>
@@ -274,35 +370,39 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                         <div>
                             <input
                                 type="checkbox"
-                                id="useMAHigh"
+                                id="downTrendUseMAHigh"
                                 disabled={autoTrade.isEnabled}
-                                checked={isSimulation}
+                                checked={downTrendUseMAHigh}
                                 onChange={(e) => {
-                                    handleChange("isSimulation", e.target.checked);
+                                    handleChange("downTrendUseMAHigh", e.target.checked);
                                 }}
                             />
-                            <label htmlFor="simulation">Use MA High</label>
+                            <label htmlFor="downTrendUseMAHigh">Use MA High</label>
                             <div className="form-row-inline">
                                 <label className="form-label-inline">MA Count</label>
                                 <input
                                     disabled={autoTrade.isEnabled}
                                     type="number"
                                     step="any"
+                                    min="1"
                                     className={`form-input compact`}
-                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                    value={downTrendMaCount}
+                                    onChange={(e) => handleChange("downTrendMaCount", e.target.value)}
                                 />
                             </div>
                         </div>
                         <div>
-                            <label className="form-label-inline">Continuous Up</label>
+                            <label className="form-label-inline">Continuous Down</label>
                             <div className="form-row-inline">
                                 <label className="form-label-inline">Count</label>
                                 <input
                                     disabled={autoTrade.isEnabled}
                                     type="number"
                                     step="any"
+                                    min="1"
                                     className={`form-input compact`}
-                                    value={priceDeltaBuy} onChange={(e) => handleChange("priceDeltaBuy", e.target.value)}
+                                    value={downTrendContinuousCount}
+                                    onChange={(e) => handleChange("downTrendContinuousCount", e.target.value)}
                                 />
                             </div>
                             <div className="form-row-inline">
@@ -311,8 +411,10 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                                     disabled={autoTrade.isEnabled}
                                     type="number"
                                     step="any"
+                                    min="0"
                                     className={`form-input compact`}
-                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                    value={downTrendContinuousRamda}
+                                    onChange={(e) => handleChange("downTrendContinuousRamda", e.target.value)}
                                 />
                             </div>
                         </div>
@@ -325,7 +427,8 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                                     type="number"
                                     step="any"
                                     className={`form-input compact`}
-                                    value={priceDeltaBuy} onChange={(e) => handleChange("priceDeltaBuy", e.target.value)}
+                                    value={downTrendPriceDeltaBuy}
+                                    onChange={(e) => handleChange("downTrendPriceDeltaBuy", e.target.value)}
                                 />
                             </div>
                             <div className="form-row-inline">
@@ -335,7 +438,8 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                                     type="number"
                                     step="any"
                                     className={`form-input compact`}
-                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                    value={downTrendPriceDeltaSell}
+                                    onChange={(e) => handleChange("downTrendPriceDeltaSell", e.target.value)}
                                 />
                             </div>
                         </div>

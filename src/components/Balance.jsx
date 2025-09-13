@@ -8,13 +8,18 @@ const Balance = ({ histories, autoTrade, price, balanceArr, setBalanceArr, selec
     useEffect(() => {
         if (histories.length == 0)
             return;
+        const changedPrice = Number(histories[0].changed_price);
         if (histories[0].swapmode) {
-            setExpectPrice("Expected Sell Price: " + (histories[0].changed_price + autoTrade.priceDeltaSell).toFixed(2));
+            // Use down trend sell price delta for selling
+            const sellDelta = autoTrade.upTrend?.priceDelta?.sell || -10000;
+            setExpectPrice("Expected Sell Price: " + (changedPrice + Number(sellDelta)).toFixed(2));
         } else {
-            if (autoTrade.priceDeltaBuy > 0)
+            // Use up trend buy price delta for buying
+            const buyDelta = autoTrade.upTrend?.priceDelta?.buy || 10000;
+            if (buyDelta > 0)
                 setExpectPrice("Expected Buy Price: NaN");
             else
-                setExpectPrice("Expected Buy Price: " + (histories[0].changed_price + autoTrade.priceDeltaBuy).toFixed(2));
+                setExpectPrice("Expected Buy Price: " + (changedPrice + Number(buyDelta)).toFixed(2));
         }
     }, [histories, autoTrade]);
 
