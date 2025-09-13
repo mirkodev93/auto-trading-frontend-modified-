@@ -674,17 +674,26 @@ body {
 }
 
 .form-row-inline {
-  display: grid;
-  grid-template-columns: 70px 1fr 130px 2fr;
+  display: flex;
   align-items: center;
   gap: 16px;
   margin: 0px 10px;
 }
 
-.form-row-inline-price-delta {
+.form-row-trend {
+  width: 50%;
+  text-align: left;
+  padding: 10px;
+  margin: 10px;
   display: flex;
-  gap: 5px;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-row-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .form-label-inline {
@@ -693,16 +702,17 @@ body {
   text-align: left;
 }
 
+.form-label-inline-bold {
+  font-weight: 700;
+  font-size: 16px;
+}
+
 .form-input.compact {
   flex: 1;
   padding: 7px 14px;
   font-size: 14px;
   border-radius: 7px;
-  margin: 3px 0px
-}
-
-.form-input-time {
-  margin-top: 0px !important;
+  margin: 3px 0px;
 }
 
 .history-wrapper {

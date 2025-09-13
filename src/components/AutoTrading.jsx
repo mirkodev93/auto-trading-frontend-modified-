@@ -185,35 +185,161 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                     className={`form-input compact`}
                     value={interval} onChange={(e) => handleChange("interval", e.target.value)}
                 />
-            </div>
-            <div className="form-row-inline" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>
                 <label className="form-label-inline">MA ramda</label>
                 <input
                     disabled={autoTrade.isEnabled}
                     type="number"
                     step="any"
-                    className={`form-input compact form-input-time`}
+                    className={`form-input compact`}
                     value={maRamda} onChange={(e) => handleChange("maRamda", e.target.value)}
                 />
-
-                <label className="form-label-inline">Price delta</label>
-                <div className="form-row-inline-price-delta">
-                    <label className="form-label-inline">Buy</label>
-                    <input
-                        disabled={autoTrade.isEnabled}
-                        type="number"
-                        step="any"
-                        className={`form-input compact form-input-time`}
-                        value={priceDeltaBuy} onChange={(e) => handleChange("priceDeltaBuy", e.target.value)}
-                    />
-                    <label className="form-label-inline">Sell</label>
-                    <input
-                        disabled={autoTrade.isEnabled}
-                        type="number"
-                        step="any"
-                        className={`form-input compact form-input-time`}
-                        value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
-                    />
+            </div>
+            <div className="form-row-inline" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>
+                <div className="form-row-trend fancy-card">
+                    <label className="form-label-inline form-label-inline-bold">Up Trend</label>
+                    <div className="form-row-flex">
+                        <div>
+                            <input
+                                type="checkbox"
+                                id="useMAHigh"
+                                disabled={autoTrade.isEnabled}
+                                checked={isSimulation}
+                                onChange={(e) => {
+                                    handleChange("isSimulation", e.target.checked);
+                                }}
+                            />
+                            <label htmlFor="simulation">Use MA High</label>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">MA Count</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label className="form-label-inline">Continuous Up</label>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">Count</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={priceDeltaBuy} onChange={(e) => handleChange("priceDeltaBuy", e.target.value)}
+                                />
+                            </div>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">Ramda</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label className="form-label-inline">Price delta</label>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">Buy</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={priceDeltaBuy} onChange={(e) => handleChange("priceDeltaBuy", e.target.value)}
+                                />
+                            </div>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">Sell</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="form-row-trend fancy-card">
+                    <label className="form-label-inline form-label-inline-bold">Down Trend</label>
+                    <div className="form-row-flex">
+                        <div>
+                            <input
+                                type="checkbox"
+                                id="useMAHigh"
+                                disabled={autoTrade.isEnabled}
+                                checked={isSimulation}
+                                onChange={(e) => {
+                                    handleChange("isSimulation", e.target.checked);
+                                }}
+                            />
+                            <label htmlFor="simulation">Use MA High</label>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">MA Count</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label className="form-label-inline">Continuous Up</label>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">Count</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={priceDeltaBuy} onChange={(e) => handleChange("priceDeltaBuy", e.target.value)}
+                                />
+                            </div>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">Ramda</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label className="form-label-inline">Price delta</label>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">Buy</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={priceDeltaBuy} onChange={(e) => handleChange("priceDeltaBuy", e.target.value)}
+                                />
+                            </div>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">Sell</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={priceDeltaSell} onChange={(e) => handleChange("priceDeltaSell", e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
