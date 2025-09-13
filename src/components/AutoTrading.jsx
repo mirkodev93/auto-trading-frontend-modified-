@@ -9,6 +9,8 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
     const [maCount, setMaCount] = useState(5);
     const [interval, setInterval] = useState(1);
     const [maRamda, setMaRamda] = useState(0);
+    const [beforeCount, setBeforeCount] = useState(2);
+    const [afterCount, setAfterCount] = useState(2);
     const [isSimulation, setIsSimulation] = useState(false);
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
@@ -35,6 +37,8 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         setMaCount(Number(autoTrade.maCount) || 5);
         setInterval(Number(autoTrade.interval) || 1);
         setMaRamda(Number(autoTrade.maRamda) || 0);
+        setBeforeCount(Number(autoTrade.beforeCount) || 2);
+        setAfterCount(Number(autoTrade.afterCount) || 2);
         setIsSimulation(autoTrade.isSimulation ?? false);
         setStartTime(autoTrade.startTime ?? '');
         setEndTime(autoTrade.endTime ?? '');
@@ -85,6 +89,8 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
             maCount: 'maCount',
             interval: 'interval',
             maRamda: 'maRamda',
+            beforeCount: 'beforeCount',
+            afterCount: 'afterCount',
             isSimulation: 'isSimulation',
             startTime: 'startTime',
             endTime: 'endTime'
@@ -108,7 +114,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
 
         setAutoTrade(prev => {
             // Convert all numeric fields to numbers when saving, except useMAHigh (boolean)
-            const numericFields = ['maCount', 'interval', 'maRamda', 'upTrendMaCount', 'upTrendContinuousCount',
+            const numericFields = ['maCount', 'interval', 'maRamda', 'beforeCount', 'afterCount', 'upTrendMaCount', 'upTrendContinuousCount',
                 'upTrendContinuousRamda', 'upTrendPriceDeltaBuy', 'upTrendPriceDeltaSell',
                 'downTrendMaCount', 'downTrendContinuousCount', 'downTrendContinuousRamda',
                 'downTrendPriceDeltaBuy', 'downTrendPriceDeltaSell'];
@@ -143,6 +149,14 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         }
         if (maRamda < 0) {
             toast.error("MA ramda must be greater than or equal to 0");
+            return;
+        }
+        if (beforeCount <= 0) {
+            toast.error("Before Count must be bigger than 0");
+            return;
+        }
+        if (afterCount <= 0) {
+            toast.error("After Count must be bigger than 0");
             return;
         }
 
@@ -308,6 +322,27 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                     min="0"
                     className={`form-input compact`}
                     value={maRamda} onChange={(e) => handleChange("maRamda", e.target.value)}
+                />
+            </div>
+            <div className="form-row-inline" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>
+                <label className="form-label-inline">Before Count</label>
+                <input
+                    disabled={autoTrade.isEnabled}
+                    type="number"
+                    step="any"
+                    min="1"
+                    className={`form-input compact`}
+                    value={beforeCount} onChange={(e) => handleChange("beforeCount", e.target.value)}
+                />
+
+                <label className="form-label-inline">After Count</label>
+                <input
+                    disabled={autoTrade.isEnabled}
+                    type="number"
+                    step="any"
+                    min="1"
+                    className={`form-input compact`}
+                    value={afterCount} onChange={(e) => handleChange("afterCount", e.target.value)}
                 />
             </div>
             <div className="form-row-inline" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>

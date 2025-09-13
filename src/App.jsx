@@ -23,6 +23,8 @@ function App() {
     maCount: 5,
     interval: 1,
     maRamda: 0,
+    beforeCount: 2,
+    afterCount: 2,
     isSimulation: false,
     startTime: '',
     endTime: '',
