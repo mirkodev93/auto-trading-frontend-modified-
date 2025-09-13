@@ -32,28 +32,28 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
     const shouldSaveRef = useRef(false);
 
     useEffect(() => {
-        setMaCount(autoTrade.maCount || 5);
-        setInterval(autoTrade.interval || 1);
-        setMaRamda(autoTrade.maRamda || 0);
-        setIsSimulation(autoTrade.isSimulation || false);
-        setStartTime(autoTrade.startTime || '');
-        setEndTime(autoTrade.endTime || '');
+        setMaCount(Number(autoTrade.maCount) || 5);
+        setInterval(Number(autoTrade.interval) || 1);
+        setMaRamda(Number(autoTrade.maRamda) || 0);
+        setIsSimulation(autoTrade.isSimulation ?? false);
+        setStartTime(autoTrade.startTime ?? '');
+        setEndTime(autoTrade.endTime ?? '');
 
         // Initialize Up Trend settings
-        setUpTrendUseMAHigh(autoTrade.upTrend?.useMAHigh || false);
-        setUpTrendMaCount(autoTrade.upTrend?.maCount || 50);
-        setUpTrendContinuousCount(autoTrade.upTrend?.continuousUp?.count || 3);
-        setUpTrendContinuousRamda(autoTrade.upTrend?.continuousUp?.ramda || 0.5);
-        setUpTrendPriceDeltaBuy(autoTrade.upTrend?.priceDelta?.buy || 10000);
-        setUpTrendPriceDeltaSell(autoTrade.upTrend?.priceDelta?.sell || 0.1);
+        setUpTrendUseMAHigh(autoTrade.upTrend?.useMAHigh ?? false);
+        setUpTrendMaCount(Number(autoTrade.upTrend?.maCount) || 50);
+        setUpTrendContinuousCount(Number(autoTrade.upTrend?.continuousUp?.count) || 3);
+        setUpTrendContinuousRamda(Number(autoTrade.upTrend?.continuousUp?.ramda) || 0.5);
+        setUpTrendPriceDeltaBuy(Number(autoTrade.upTrend?.priceDelta?.buy) || 10000);
+        setUpTrendPriceDeltaSell(Number(autoTrade.upTrend?.priceDelta?.sell) || 0.1);
 
         // Initialize Down Trend settings
-        setDownTrendUseMAHigh(autoTrade.downTrend?.useMAHigh || false);
-        setDownTrendMaCount(autoTrade.downTrend?.maCount || 50);
-        setDownTrendContinuousCount(autoTrade.downTrend?.continuousDown?.count || 3);
-        setDownTrendContinuousRamda(autoTrade.downTrend?.continuousDown?.ramda || 0.5);
-        setDownTrendPriceDeltaBuy(autoTrade.downTrend?.priceDelta?.buy || -0.1);
-        setDownTrendPriceDeltaSell(autoTrade.downTrend?.priceDelta?.sell || -10000);
+        setDownTrendUseMAHigh(autoTrade.downTrend?.useMAHigh ?? false);
+        setDownTrendMaCount(Number(autoTrade.downTrend?.maCount) || 50);
+        setDownTrendContinuousCount(Number(autoTrade.downTrend?.continuousDown?.count) || 3);
+        setDownTrendContinuousRamda(Number(autoTrade.downTrend?.continuousDown?.ramda) || 0.5);
+        setDownTrendPriceDeltaBuy(Number(autoTrade.downTrend?.priceDelta?.buy) || -0.1);
+        setDownTrendPriceDeltaSell(Number(autoTrade.downTrend?.priceDelta?.sell) || -10000);
     }, [autoTrade]);
 
     useEffect(() => {
@@ -107,14 +107,24 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         };
 
         setAutoTrade(prev => {
+            // Convert all numeric fields to numbers when saving, except useMAHigh (boolean)
+            const numericFields = ['maCount', 'interval', 'maRamda', 'upTrendMaCount', 'upTrendContinuousCount',
+                'upTrendContinuousRamda', 'upTrendPriceDeltaBuy', 'upTrendPriceDeltaSell',
+                'downTrendMaCount', 'downTrendContinuousCount', 'downTrendContinuousRamda',
+                'downTrendPriceDeltaBuy', 'downTrendPriceDeltaSell'];
+
+            const processedValue = numericFields.includes(field) && !field.includes('useMAHigh')
+                ? (value === '' ? value : Number(value))
+                : value;
+
             // Handle direct properties
             if (directFields[field]) {
-                return { ...prev, [directFields[field]]: value };
+                return { ...prev, [directFields[field]]: processedValue };
             }
 
             // Handle nested properties
             if (nestedFields[field]) {
-                return updateNestedProperty(prev, nestedFields[field], value);
+                return updateNestedProperty(prev, nestedFields[field], processedValue);
             }
 
             // Return unchanged if field not found
@@ -161,6 +171,24 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         }
         if (downTrendContinuousRamda < 0) {
             toast.error("Down Trend continuous ramda must be greater than or equal to 0");
+            return;
+        }
+
+        // Validate price delta values cannot be empty
+        if (upTrendPriceDeltaBuy === '') {
+            toast.error("Up Trend Price Delta Buy cannot be empty");
+            return;
+        }
+        if (upTrendPriceDeltaSell === '') {
+            toast.error("Up Trend Price Delta Sell cannot be empty");
+            return;
+        }
+        if (downTrendPriceDeltaBuy === '') {
+            toast.error("Down Trend Price Delta Buy cannot be empty");
+            return;
+        }
+        if (downTrendPriceDeltaSell === '') {
+            toast.error("Down Trend Price Delta Sell cannot be empty");
             return;
         }
 
