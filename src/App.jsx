@@ -39,7 +39,8 @@ function App() {
       priceDelta: {
         buy: 10000,
         sell: 0.1
-      }
+      },
+      checkStrong: false
     },
     // Down Trend settings
     downTrend: {
@@ -52,7 +53,8 @@ function App() {
       priceDelta: {
         buy: -0.1,
         sell: -10000
-      }
+      },
+      checkStrong: false
     },
     // Ambiguous Trend settings
     ambiguousTrend: {

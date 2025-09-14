@@ -22,6 +22,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
     const [upTrendContinuousRamda, setUpTrendContinuousRamda] = useState(0.5);
     const [upTrendPriceDeltaBuy, setUpTrendPriceDeltaBuy] = useState(10000);
     const [upTrendPriceDeltaSell, setUpTrendPriceDeltaSell] = useState(0.1);
+    const [upTrendCheckStrong, setUpTrendCheckStrong] = useState(false);
 
     // Down Trend state
     const [downTrendUseMAHigh, setDownTrendUseMAHigh] = useState(false);
@@ -30,6 +31,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
     const [downTrendContinuousRamda, setDownTrendContinuousRamda] = useState(0.5);
     const [downTrendPriceDeltaBuy, setDownTrendPriceDeltaBuy] = useState(-0.1);
     const [downTrendPriceDeltaSell, setDownTrendPriceDeltaSell] = useState(-10000);
+    const [downTrendCheckStrong, setDownTrendCheckStrong] = useState(false);
 
     // Ambiguous Trend state
     const [ambiguousTrendPriceDeltaBuy, setAmbiguousTrendPriceDeltaBuy] = useState(-0.1);
@@ -54,6 +56,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         setUpTrendContinuousRamda(autoTrade.upTrend?.continuousUp?.ramda ?? 0.5);
         setUpTrendPriceDeltaBuy(autoTrade.upTrend?.priceDelta?.buy ?? 10000);
         setUpTrendPriceDeltaSell(autoTrade.upTrend?.priceDelta?.sell ?? 0.1);
+        setUpTrendCheckStrong(autoTrade.upTrend?.checkStrong ?? false);
 
         // Initialize Down Trend settings
         setDownTrendUseMAHigh(autoTrade.downTrend?.useMAHigh ?? false);
@@ -62,6 +65,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         setDownTrendContinuousRamda(autoTrade.downTrend?.continuousDown?.ramda ?? 0.5);
         setDownTrendPriceDeltaBuy(autoTrade.downTrend?.priceDelta?.buy ?? -0.1);
         setDownTrendPriceDeltaSell(autoTrade.downTrend?.priceDelta?.sell ?? -10000);
+        setDownTrendCheckStrong(autoTrade.downTrend?.checkStrong ?? false);
 
         // Initialize Ambiguous Trend settings
         setAmbiguousTrendPriceDeltaBuy(autoTrade.ambiguousTrend?.priceDelta?.buy ?? -0.1);
@@ -112,12 +116,14 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
             upTrendContinuousRamda: 'upTrend.continuousUp.ramda',
             upTrendPriceDeltaBuy: 'upTrend.priceDelta.buy',
             upTrendPriceDeltaSell: 'upTrend.priceDelta.sell',
+            upTrendCheckStrong: 'upTrend.checkStrong',
             downTrendUseMAHigh: 'downTrend.useMAHigh',
             downTrendMaCount: 'downTrend.maCount',
             downTrendContinuousCount: 'downTrend.continuousDown.count',
             downTrendContinuousRamda: 'downTrend.continuousDown.ramda',
             downTrendPriceDeltaBuy: 'downTrend.priceDelta.buy',
             downTrendPriceDeltaSell: 'downTrend.priceDelta.sell',
+            downTrendCheckStrong: 'downTrend.checkStrong',
             ambiguousTrendPriceDeltaBuy: 'ambiguousTrend.priceDelta.buy',
             ambiguousTrendPriceDeltaSell: 'ambiguousTrend.priceDelta.sell'
         };
@@ -390,6 +396,18 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                                     onChange={(e) => handleChange("upTrendMaCount", e.target.value)}
                                 />
                             </div>
+                            <div style={{ marginTop: '8px' }}>
+                                <input
+                                    type="checkbox"
+                                    id="upTrendCheckStrong"
+                                    disabled={autoTrade.isEnabled}
+                                    checked={upTrendCheckStrong}
+                                    onChange={(e) => {
+                                        handleChange("upTrendCheckStrong", e.target.checked);
+                                    }}
+                                />
+                                <label htmlFor="upTrendCheckStrong">Check Strong</label>
+                            </div>
                         </div>
                         <div>
                             <label className="form-label-inline">Continuous Up</label>
@@ -470,6 +488,18 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                                     value={downTrendMaCount}
                                     onChange={(e) => handleChange("downTrendMaCount", e.target.value)}
                                 />
+                            </div>
+                            <div style={{ marginTop: '8px' }}>
+                                <input
+                                    type="checkbox"
+                                    id="downTrendCheckStrong"
+                                    disabled={autoTrade.isEnabled}
+                                    checked={downTrendCheckStrong}
+                                    onChange={(e) => {
+                                        handleChange("downTrendCheckStrong", e.target.checked);
+                                    }}
+                                />
+                                <label htmlFor="downTrendCheckStrong">Check Strong</label>
                             </div>
                         </div>
                         <div>
