@@ -53,6 +53,13 @@ function App() {
         buy: -0.1,
         sell: -10000
       }
+    },
+    // Ambiguous Trend settings
+    ambiguousTrend: {
+      priceDelta: {
+        buy: -0.1,
+        sell: 0.1
+      }
     }
   });
   const [simulationProgress, setSimulationProgress] = useState(0);

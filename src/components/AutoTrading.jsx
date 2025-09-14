@@ -31,33 +31,41 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
     const [downTrendPriceDeltaBuy, setDownTrendPriceDeltaBuy] = useState(-0.1);
     const [downTrendPriceDeltaSell, setDownTrendPriceDeltaSell] = useState(-10000);
 
+    // Ambiguous Trend state
+    const [ambiguousTrendPriceDeltaBuy, setAmbiguousTrendPriceDeltaBuy] = useState(-0.1);
+    const [ambiguousTrendPriceDeltaSell, setAmbiguousTrendPriceDeltaSell] = useState(0.1);
+
     const shouldSaveRef = useRef(false);
 
     useEffect(() => {
-        setMaCount(Number(autoTrade.maCount) || 5);
-        setInterval(Number(autoTrade.interval) || 1);
-        setMaRamda(Number(autoTrade.maRamda) || 0);
-        setBeforeCount(Number(autoTrade.beforeCount) || 2);
-        setAfterCount(Number(autoTrade.afterCount) || 2);
+        setMaCount(autoTrade.maCount ?? 5);
+        setInterval(autoTrade.interval ?? 1);
+        setMaRamda(autoTrade.maRamda ?? 0);
+        setBeforeCount(autoTrade.beforeCount ?? 2);
+        setAfterCount(autoTrade.afterCount ?? 2);
         setIsSimulation(autoTrade.isSimulation ?? false);
         setStartTime(autoTrade.startTime ?? '');
         setEndTime(autoTrade.endTime ?? '');
 
         // Initialize Up Trend settings
         setUpTrendUseMAHigh(autoTrade.upTrend?.useMAHigh ?? false);
-        setUpTrendMaCount(Number(autoTrade.upTrend?.maCount) || 50);
-        setUpTrendContinuousCount(Number(autoTrade.upTrend?.continuousUp?.count) || 3);
-        setUpTrendContinuousRamda(Number(autoTrade.upTrend?.continuousUp?.ramda) || 0.5);
-        setUpTrendPriceDeltaBuy(Number(autoTrade.upTrend?.priceDelta?.buy) || 10000);
-        setUpTrendPriceDeltaSell(Number(autoTrade.upTrend?.priceDelta?.sell) || 0.1);
+        setUpTrendMaCount(autoTrade.upTrend?.maCount ?? 50);
+        setUpTrendContinuousCount(autoTrade.upTrend?.continuousUp?.count ?? 3);
+        setUpTrendContinuousRamda(autoTrade.upTrend?.continuousUp?.ramda ?? 0.5);
+        setUpTrendPriceDeltaBuy(autoTrade.upTrend?.priceDelta?.buy ?? 10000);
+        setUpTrendPriceDeltaSell(autoTrade.upTrend?.priceDelta?.sell ?? 0.1);
 
         // Initialize Down Trend settings
         setDownTrendUseMAHigh(autoTrade.downTrend?.useMAHigh ?? false);
-        setDownTrendMaCount(Number(autoTrade.downTrend?.maCount) || 50);
-        setDownTrendContinuousCount(Number(autoTrade.downTrend?.continuousDown?.count) || 3);
-        setDownTrendContinuousRamda(Number(autoTrade.downTrend?.continuousDown?.ramda) || 0.5);
-        setDownTrendPriceDeltaBuy(Number(autoTrade.downTrend?.priceDelta?.buy) || -0.1);
-        setDownTrendPriceDeltaSell(Number(autoTrade.downTrend?.priceDelta?.sell) || -10000);
+        setDownTrendMaCount(autoTrade.downTrend?.maCount ?? 50);
+        setDownTrendContinuousCount(autoTrade.downTrend?.continuousDown?.count ?? 3);
+        setDownTrendContinuousRamda(autoTrade.downTrend?.continuousDown?.ramda ?? 0.5);
+        setDownTrendPriceDeltaBuy(autoTrade.downTrend?.priceDelta?.buy ?? -0.1);
+        setDownTrendPriceDeltaSell(autoTrade.downTrend?.priceDelta?.sell ?? -10000);
+
+        // Initialize Ambiguous Trend settings
+        setAmbiguousTrendPriceDeltaBuy(autoTrade.ambiguousTrend?.priceDelta?.buy ?? -0.1);
+        setAmbiguousTrendPriceDeltaSell(autoTrade.ambiguousTrend?.priceDelta?.sell ?? 0.1);
     }, [autoTrade]);
 
     useEffect(() => {
@@ -109,7 +117,9 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
             downTrendContinuousCount: 'downTrend.continuousDown.count',
             downTrendContinuousRamda: 'downTrend.continuousDown.ramda',
             downTrendPriceDeltaBuy: 'downTrend.priceDelta.buy',
-            downTrendPriceDeltaSell: 'downTrend.priceDelta.sell'
+            downTrendPriceDeltaSell: 'downTrend.priceDelta.sell',
+            ambiguousTrendPriceDeltaBuy: 'ambiguousTrend.priceDelta.buy',
+            ambiguousTrendPriceDeltaSell: 'ambiguousTrend.priceDelta.sell'
         };
 
         setAutoTrade(prev => {
@@ -117,7 +127,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
             const numericFields = ['maCount', 'interval', 'maRamda', 'beforeCount', 'afterCount', 'upTrendMaCount', 'upTrendContinuousCount',
                 'upTrendContinuousRamda', 'upTrendPriceDeltaBuy', 'upTrendPriceDeltaSell',
                 'downTrendMaCount', 'downTrendContinuousCount', 'downTrendContinuousRamda',
-                'downTrendPriceDeltaBuy', 'downTrendPriceDeltaSell'];
+                'downTrendPriceDeltaBuy', 'downTrendPriceDeltaSell', 'ambiguousTrendPriceDeltaBuy', 'ambiguousTrendPriceDeltaSell'];
 
             const processedValue = numericFields.includes(field) && !field.includes('useMAHigh')
                 ? (value === '' ? value : Number(value))
@@ -203,6 +213,14 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         }
         if (downTrendPriceDeltaSell === '') {
             toast.error("Down Trend Price Delta Sell cannot be empty");
+            return;
+        }
+        if (ambiguousTrendPriceDeltaBuy === '') {
+            toast.error("Ambiguous Trend Price Delta Buy cannot be empty");
+            return;
+        }
+        if (ambiguousTrendPriceDeltaSell === '') {
+            toast.error("Ambiguous Trend Price Delta Sell cannot be empty");
             return;
         }
 
@@ -345,7 +363,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                     value={afterCount} onChange={(e) => handleChange("afterCount", e.target.value)}
                 />
             </div>
-            <div className="form-row-inline" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>
+            <div className="form-row-inline" style={{ opacity: autoTrade.isEnabled ? "50%" : "", alignItems: "normal" }}>
                 <div className="form-row-trend fancy-card">
                     <label className="form-label-inline form-label-inline-bold">Up Trend</label>
                     <div className="form-row-flex">
@@ -503,6 +521,36 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                                     className={`form-input compact`}
                                     value={downTrendPriceDeltaSell}
                                     onChange={(e) => handleChange("downTrendPriceDeltaSell", e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="form-row-trend fancy-card">
+                    <label className="form-label-inline form-label-inline-bold">Ambiguous Trend</label>
+                    <div className="form-row-flex">
+                        <div>
+                            <label className="form-label-inline">Price delta</label>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">Buy</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={ambiguousTrendPriceDeltaBuy}
+                                    onChange={(e) => handleChange("ambiguousTrendPriceDeltaBuy", e.target.value)}
+                                />
+                            </div>
+                            <div className="form-row-inline">
+                                <label className="form-label-inline">Sell</label>
+                                <input
+                                    disabled={autoTrade.isEnabled}
+                                    type="number"
+                                    step="any"
+                                    className={`form-input compact`}
+                                    value={ambiguousTrendPriceDeltaSell}
+                                    onChange={(e) => handleChange("ambiguousTrendPriceDeltaSell", e.target.value)}
                                 />
                             </div>
                         </div>
