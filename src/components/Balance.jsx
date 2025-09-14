@@ -11,11 +11,11 @@ const Balance = ({ histories, autoTrade, price, balanceArr, setBalanceArr, selec
         const changedPrice = Number(histories[0].changed_price);
         if (histories[0].swapmode) {
             // Use down trend sell price delta for selling
-            const sellDelta = autoTrade.upTrend?.priceDelta?.sell || -10000;
+            const sellDelta = autoTrade.upTrend?.priceDelta?.sell ?? -10000;
             setExpectPrice("Expected Sell Price: " + (changedPrice + Number(sellDelta)).toFixed(2));
         } else {
             // Use up trend buy price delta for buying
-            const buyDelta = autoTrade.upTrend?.priceDelta?.buy || 10000;
+            const buyDelta = autoTrade.upTrend?.priceDelta?.buy ?? 10000;
             if (buyDelta > 0)
                 setExpectPrice("Expected Buy Price: NaN");
             else
