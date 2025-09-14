@@ -458,7 +458,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                                     handleChange("downTrendUseMAHigh", e.target.checked);
                                 }}
                             />
-                            <label htmlFor="downTrendUseMAHigh">Use MA High</label>
+                            <label htmlFor="downTrendUseMAHigh">Use MA Low</label>
                             <div className="form-row-inline">
                                 <label className="form-label-inline">MA Count</label>
                                 <input
