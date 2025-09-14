@@ -63,6 +63,7 @@ function App() {
     }
   });
   const [simulationProgress, setSimulationProgress] = useState(0);
+  const [globalTrend, setGlobalTrend] = useState('');
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:4000");
@@ -98,6 +99,10 @@ function App() {
             autoClose: 5000,
             position: "top-right"
           });
+        }
+
+        if (msg.type === "global_trend") {
+          setGlobalTrend(msg.data.trend);
         }
       } catch (err) {
         console.error("WS parse error:", err);
@@ -184,6 +189,7 @@ function App() {
           setAutoTrade={setAutoTrade}
           handleSave={handleSave}
           simulationProgress={simulationProgress}
+          globalTrend={globalTrend}
         />
       </div>
       <div className="history-wrapper">

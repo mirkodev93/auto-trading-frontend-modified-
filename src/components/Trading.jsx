@@ -14,7 +14,8 @@ const Trading = ({
     autoTrade,
     setAutoTrade,
     handleSave,
-    simulationProgress
+    simulationProgress,
+    globalTrend
 }) => {
     const [isStart, setIsStart] = useState(true);
 
@@ -63,6 +64,13 @@ const Trading = ({
                     >
                         Manual
                     </button>
+                </div>
+                {/* Global Trend Display */}
+                <div style={{ textAlign: 'center', margin: "10px", color: "white" }}>
+                    <span style={{ fontSize: '14px' }}>Global Trend: </span>
+                    <span style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                        {globalTrend.charAt(0).toUpperCase() + globalTrend.slice(1)}
+                    </span>
                 </div>
                 <div>
                     {isStart && (
