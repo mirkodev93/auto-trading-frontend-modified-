@@ -19,6 +19,17 @@ const Trading = ({
 }) => {
     const [isStart, setIsStart] = useState(true);
 
+    const getGlobalTrendText = (trend) => {
+        const trendMap = {
+            'up': 'Up',
+            'do': 'Down',
+            'su': 'Strong Up',
+            'sd': 'Strong Down',
+            'am': 'Ambiguous'
+        };
+        return trendMap[trend] || 'Unknown';
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -69,7 +80,7 @@ const Trading = ({
                 <div style={{ textAlign: 'center', margin: "10px", color: "white" }}>
                     <span style={{ fontSize: '14px' }}>Global Trend: </span>
                     <span style={{ fontSize: '16px', fontWeight: 'bold' }}>
-                        {globalTrend.charAt(0).toUpperCase() + globalTrend.slice(1)}
+                        {getGlobalTrendText(globalTrend)}
                     </span>
                 </div>
                 <div>
