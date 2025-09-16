@@ -8,7 +8,8 @@ import { openLog } from "../lib/api";
 const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }) => {
     const [maCount, setMaCount] = useState(5);
     const [interval, setInterval] = useState(1);
-    const [maRamda, setMaRamda] = useState(0);
+    const [maRamda1, setMaRamda1] = useState(0);
+    const [maRamda2, setMaRamda2] = useState(0);
     const [beforeCount, setBeforeCount] = useState(2);
     const [afterCount, setAfterCount] = useState(2);
     const [isSimulation, setIsSimulation] = useState(false);
@@ -42,7 +43,8 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
     useEffect(() => {
         setMaCount(autoTrade.maCount ?? 5);
         setInterval(autoTrade.interval ?? 1);
-        setMaRamda(autoTrade.maRamda ?? 0);
+        setMaRamda1(autoTrade.maRamda1 ?? 0);
+        setMaRamda2(autoTrade.maRamda2 ?? 0);
         setBeforeCount(autoTrade.beforeCount ?? 2);
         setAfterCount(autoTrade.afterCount ?? 2);
         setIsSimulation(autoTrade.isSimulation ?? false);
@@ -100,7 +102,8 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
         const directFields = {
             maCount: 'maCount',
             interval: 'interval',
-            maRamda: 'maRamda',
+            maRamda1: 'maRamda1',
+            maRamda2: 'maRamda2',
             beforeCount: 'beforeCount',
             afterCount: 'afterCount',
             isSimulation: 'isSimulation',
@@ -130,7 +133,7 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
 
         setAutoTrade(prev => {
             // Convert all numeric fields to numbers when saving, except useMAHigh (boolean)
-            const numericFields = ['maCount', 'interval', 'maRamda', 'beforeCount', 'afterCount', 'upTrendMaCount', 'upTrendContinuousCount',
+            const numericFields = ['maCount', 'interval', 'maRamda1', 'maRamda2', 'beforeCount', 'afterCount', 'upTrendMaCount', 'upTrendContinuousCount',
                 'upTrendContinuousRamda', 'upTrendPriceDeltaBuy', 'upTrendPriceDeltaSell',
                 'downTrendMaCount', 'downTrendContinuousCount', 'downTrendContinuousRamda',
                 'downTrendPriceDeltaBuy', 'downTrendPriceDeltaSell', 'ambiguousTrendPriceDeltaBuy', 'ambiguousTrendPriceDeltaSell'];
@@ -163,8 +166,12 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
             toast.error("Interval must be bigger than 0");
             return;
         }
-        if (maRamda < 0) {
-            toast.error("MA ramda must be greater than or equal to 0");
+        if (maRamda1 < 0) {
+            toast.error("MA ramda1 must be greater than or equal to 0");
+            return;
+        }
+        if (maRamda2 < 0) {
+            toast.error("MA ramda2 must be greater than or equal to 0");
             return;
         }
         if (beforeCount <= 0) {
@@ -338,14 +345,25 @@ const AutoTrading = ({ autoTrade, setAutoTrade, handleSave, simulationProgress }
                     className={`form-input compact`}
                     value={interval} onChange={(e) => handleChange("interval", e.target.value)}
                 />
-                <label className="form-label-inline">MA ramda</label>
+            </div>
+            <div className="form-row-inline" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>
+                <label className="form-label-inline">MA ramda1</label>
                 <input
                     disabled={autoTrade.isEnabled}
                     type="number"
                     step="any"
                     min="0"
                     className={`form-input compact`}
-                    value={maRamda} onChange={(e) => handleChange("maRamda", e.target.value)}
+                    value={maRamda1} onChange={(e) => handleChange("maRamda1", e.target.value)}
+                />
+                <label className="form-label-inline">MA ramda2</label>
+                <input
+                    disabled={autoTrade.isEnabled}
+                    type="number"
+                    step="any"
+                    min="0"
+                    className={`form-input compact`}
+                    value={maRamda2} onChange={(e) => handleChange("maRamda2", e.target.value)}
                 />
             </div>
             <div className="form-row-inline" style={{ opacity: autoTrade.isEnabled ? "50%" : "" }}>
