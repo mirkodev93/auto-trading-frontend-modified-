@@ -17,7 +17,7 @@ function App() {
   const [histories, setHistories] = useState([]);
   const [isFuture, setIsFuture] = useState(false);
   const [selectedToken, setSelectedToken] = useState("sol");
-  const [manualTrade, setManualTrade] = useState({ isEnabled: false, rules: [] });
+  const [manualTrade, setManualTrade] = useState({ isEnabled: false, rules: [], allPreviousRulesSwapped: false });
   const [autoTrade, setAutoTrade] = useState({
     isEnabled: false,
     maCount: 5,
@@ -172,7 +172,7 @@ function App() {
       const s = parseSettingsResponse(data);
       setIsFuture(!!s.future);
       setSelectedToken(s.token ?? "sol");
-      setManualTrade(s.manualTrade ?? { isEnabled: false, rules: [] });
+      setManualTrade(s.manualTrade ?? { isEnabled: false, rules: [], allPreviousRulesSwapped: false });
       setAutoTrade(s.autoTrade ?? {});
     };
     fetchData();

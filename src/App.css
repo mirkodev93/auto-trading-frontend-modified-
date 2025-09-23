@@ -872,7 +872,7 @@ body {
 .munual-toggle {
   margin: 10px 10px -10px 0px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .stop-btn {

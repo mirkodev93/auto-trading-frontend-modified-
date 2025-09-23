@@ -94,6 +94,17 @@ const Rules = ({ manualTrade, setManualTrade, handleSave }) => {
         <button className="manual-label">Force</button>
 
         <div className="munual-toggle">
+          <div className="simulation-checkbox">
+            <input
+              type="checkbox"
+              id="allPreviousRulesSwapped"
+              checked={manualTrade.allPreviousRulesSwapped || false}
+              onChange={(e) => {
+                setManualTrade(prev => ({ ...prev, allPreviousRulesSwapped: e.target.checked }));
+              }}
+            />
+            <label htmlFor="allPreviousRulesSwapped">All Previous Rules Swapped</label>
+          </div>
           {manualTrade.isEnabled ?
             <button className="save-btn stop-btn" onClick={() => handleManual(false)}>Stop</button> :
             <button className="save-btn " onClick={() => handleManual(true)}>Start</button>
