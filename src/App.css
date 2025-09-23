@@ -218,6 +218,14 @@ body {
   white-space: nowrap;
 }
 
+.chip-value-positive {
+  color: #4CAF50;
+}
+
+.chip-value-negative {
+  color: #F44336;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

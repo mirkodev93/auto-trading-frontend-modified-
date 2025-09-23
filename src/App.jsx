@@ -67,6 +67,14 @@ function App() {
   });
   const [simulationProgress, setSimulationProgress] = useState(0);
   const [globalTrend, setGlobalTrend] = useState('');
+  const [technicalIndicators, setTechnicalIndicators] = useState({
+    RSI: 0,
+    MA50: 0,
+    MA200: 0,
+    MA5: 0,
+    slopeMA5: 0,
+    currentPrice: 0
+  });
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:4000");
@@ -106,6 +114,9 @@ function App() {
 
         if (msg.type === "global_trend") {
           setGlobalTrend(msg.data.trend);
+          if (msg.data.technicalIndicators) {
+            setTechnicalIndicators(msg.data.technicalIndicators);
+          }
         }
       } catch (err) {
         console.error("WS parse error:", err);
@@ -193,6 +204,7 @@ function App() {
           handleSave={handleSave}
           simulationProgress={simulationProgress}
           globalTrend={globalTrend}
+          technicalIndicators={technicalIndicators}
         />
       </div>
       <div className="history-wrapper">

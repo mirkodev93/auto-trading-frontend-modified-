@@ -15,7 +15,8 @@ const Trading = ({
     setAutoTrade,
     handleSave,
     simulationProgress,
-    globalTrend
+    globalTrend,
+    technicalIndicators
 }) => {
     const [isStart, setIsStart] = useState(true);
 
@@ -69,11 +70,19 @@ const Trading = ({
                     </button>
                     <button
                         type="button"
-                        className={`tab ${mode === "Manual" ? "active" : ""}`}
-                        onClick={() => switchMode("Manual")}
-                        aria-pressed={mode === "Manual"}
+                        className={`tab ${mode === "Swap" ? "active" : ""}`}
+                        onClick={() => switchMode("Swap")}
+                        aria-pressed={mode === "Swap"}
                     >
-                        Manual
+                        Swap
+                    </button>
+                    <button
+                        type="button"
+                        className={`tab ${mode === "Set Point" ? "active" : ""}`}
+                        onClick={() => switchMode("Set Point")}
+                        aria-pressed={mode === "Set Point"}
+                    >
+                        Set Point
                     </button>
                 </div>
                 {/* Global Trend Display */}
@@ -110,9 +119,41 @@ const Trading = ({
                             <AutoTrading autoTrade={autoTrade} setAutoTrade={setAutoTrade} handleSave={handleSave} simulationProgress={simulationProgress} />
                         </div>
                     ) : null}
-                    {mode === "Manual" ? (
+                    {mode === "Swap" ? (
                         <div>
                             <SwapTrading />
+                        </div>
+                    ) : null}
+                    {mode === "Set Point" ? (
+                        <div>
+                            {/* Technical Indicators Display */}
+                            <div className="fancy-card manual-trade">
+                                <div className="manual-label">Technical Indicators</div>
+                                <div style={{ margin: "20px", fontSize: "18px" }}>
+                                    <div className="form-row-inline balance-header">
+                                        <span>RSI:</span>
+                                        <span>{technicalIndicators.RSI?.toFixed(2) || '0.00'}</span>
+                                    </div>
+                                    <div className="form-row-inline balance-header">
+                                        <span>MA5:</span>
+                                        <span>{technicalIndicators.MA5?.toFixed(4) || '0.0000'}</span>
+                                    </div>
+                                    <div className="form-row-inline balance-header">
+                                        <span>MA50:</span>
+                                        <span>{technicalIndicators.MA50?.toFixed(4) || '0.0000'}</span>
+                                    </div>
+                                    <div className="form-row-inline balance-header">
+                                        <span>MA200:</span>
+                                        <span>{technicalIndicators.MA200?.toFixed(4) || '0.0000'}</span>
+                                    </div>
+                                    <div className="form-row-inline balance-header">
+                                        <span>Slope MA5:</span>
+                                        <span className={technicalIndicators.slopeMA5 >= 0 ? 'chip-value-positive' : 'chip-value-negative'}>
+                                            {technicalIndicators.slopeMA5?.toFixed(6) || '0.000000'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                             <ManualTrading manualTrade={manualTrade} setManualTrade={setManualTrade} handleSave={handleSave} />
                         </div>
                     ) : null}
