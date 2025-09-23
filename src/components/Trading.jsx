@@ -16,7 +16,9 @@ const Trading = ({
     handleSave,
     simulationProgress,
     globalTrend,
-    technicalIndicators
+    technicalIndicators,
+    price,
+    balanceArr
 }) => {
     const [isStart, setIsStart] = useState(true);
 
@@ -121,7 +123,7 @@ const Trading = ({
                     ) : null}
                     {mode === "Swap" ? (
                         <div>
-                            <SwapTrading />
+                            <SwapTrading price={price} balanceArr={balanceArr} />
                         </div>
                     ) : null}
                     {mode === "Set Point" ? (

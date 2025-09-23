@@ -205,6 +205,8 @@ function App() {
           simulationProgress={simulationProgress}
           globalTrend={globalTrend}
           technicalIndicators={technicalIndicators}
+          price={price}
+          balanceArr={balanceArr}
         />
       </div>
       <div className="history-wrapper">
