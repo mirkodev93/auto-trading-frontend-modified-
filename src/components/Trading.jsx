@@ -129,7 +129,7 @@ const Trading = ({
                     {mode === "Set Point" ? (
                         <div>
                             {/* Technical Indicators Display */}
-                            <div className="fancy-card manual-trade">
+                            <div className="fancy-card manual-trade" style={{ display: "grid", gridTemplateColumns: "auto auto" }}>
                                 <div className="manual-label">Technical Indicators</div>
                                 <div style={{ margin: "20px", fontSize: "18px" }}>
                                     <div className="form-row-inline balance-header">
@@ -152,6 +152,38 @@ const Trading = ({
                                         <span>Slope MA5:</span>
                                         <span className={technicalIndicators.slopeMA5 >= 0 ? 'chip-value-positive' : 'chip-value-negative'}>
                                             {technicalIndicators.slopeMA5?.toFixed(6) || '0.000000'}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div style={{ margin: "20px", fontSize: "18px" }}>
+                                    <div className="form-row-inline balance-header">
+                                        <span>{"RSI > 50"}</span>
+                                        <span className={technicalIndicators.RSI > 50 ? 'chip-value-positive' : 'chip-value-negative'}>
+                                            {technicalIndicators.RSI > 50 ? 'True' : 'False'}
+                                        </span>
+                                    </div>
+                                    <div className="form-row-inline balance-header">
+                                        <span>{"curPrice > MA50"}</span>
+                                        <span className={price > technicalIndicators.MA50 ? 'chip-value-positive' : 'chip-value-negative'}>
+                                            {price > technicalIndicators.MA50 ? 'True' : 'False'}
+                                        </span>
+                                    </div>
+                                    <div className="form-row-inline balance-header">
+                                        <span>{"MA5 > MA50"}</span>
+                                        <span className={technicalIndicators.MA5 > technicalIndicators.MA50 ? 'chip-value-positive' : 'chip-value-negative'}>
+                                            {technicalIndicators.MA5 > technicalIndicators.MA50 ? 'True' : 'False'}
+                                        </span>
+                                    </div>
+                                    <div className="form-row-inline balance-header">
+                                        <span>{"curPrice > MA200"}</span>
+                                        <span className={price > technicalIndicators.MA200 ? 'chip-value-positive' : 'chip-value-negative'}>
+                                            {price > technicalIndicators.MA200 ? 'True' : 'False'}
+                                        </span>
+                                    </div>
+                                    <div className="form-row-inline balance-header">
+                                        <span>{"MA50 > MA200"}</span>
+                                        <span className={technicalIndicators.MA50 > technicalIndicators.MA200 ? 'chip-value-positive' : 'chip-value-negative'}>
+                                            {technicalIndicators.MA50 > technicalIndicators.MA200 ? 'True' : 'False'}
                                         </span>
                                     </div>
                                 </div>
