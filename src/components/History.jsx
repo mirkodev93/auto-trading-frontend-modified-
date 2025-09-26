@@ -122,28 +122,44 @@ const History = ({ histories, setHistories }) => {
       </div>
 
       <div className="trade-log">
-        {(filteredHistories.length ? filteredHistories : []).map((entry, index) => (
-          <div className="trade-entry" key={index}>
-            <div className="trade-time">{entry.time}</div>
-            {entry.swapmode ? (
-              <div className={expanded ? "trade-action-expanded" : "trade-action"}>
-                <span>[{entry.message || ''}]</span>
-                <span>At {entry.changed_price.toFixed(2)}, Swapped {Math.abs(entry.changed_usdt).toFixed(2)} USDT to {Math.abs(entry.changed_sol).toFixed(6)} SOL</span>
-                <span>New balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(6)}({Math.abs(entry.changed_sol).toFixed(6)}) SOL</span>
-                <span>{(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)} USDT</span>
-                <span>total: {entry.total?.toFixed?.(2) ?? "0.00"}, fee: {entry.fee?.toFixed?.(2) ?? "0.00"}</span>
-              </div>
-            ) : (
-              <div className={expanded ? "trade-action-expanded" : "trade-action"}>
-                <span>[{entry.message || ''}]</span>
-                <span>At {entry.changed_price.toFixed(2)}, Swapped {Math.abs(entry.changed_sol).toFixed(6)} SOL to {Math.abs(entry.changed_usdt).toFixed(2)} USDT</span>
-                <span>New balance: {(entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(6)} SOL</span>
-                <span>{(entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2)}({Math.abs(entry.changed_usdt).toFixed(2)}) USDT</span>
-                <span>total: {entry.total?.toFixed?.(2) ?? "0.00"}, fee: {entry.fee?.toFixed?.(2) ?? "0.00"}</span>
-              </div>
-            )}
-          </div>
-        ))}
+        {(filteredHistories.length ? filteredHistories : []).map((entry, index) => {
+          const pastEntry = filteredHistories[index + 1];
+          const changedUsdt = Math.abs(entry.changed_usdt).toFixed(2);
+          const changedSol = Math.abs(entry.changed_sol).toFixed(6);
+          const changedPrice = entry.changed_price.toFixed(2);
+          const message = entry.message || '';
+          const solBalance = (entry.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(6);
+          const usdtBalance = (entry.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2);
+          const pastSolBalance = (pastEntry?.balance?.find(b => b?.token === "sol")?.value ?? 0).toFixed(6);
+          const pastUsdtBalance = (pastEntry?.balance?.find(b => b?.token === "usdt")?.value ?? 0).toFixed(2);
+          const actualPrice = Math.abs((parseFloat(usdtBalance) - parseFloat(pastUsdtBalance)) / (parseFloat(solBalance) - parseFloat(pastSolBalance))).toFixed(2);
+          const total = entry.total?.toFixed?.(2) ?? "0.00";
+          const fee = entry.fee?.toFixed?.(2) ?? "0.00";
+          const actionClass = expanded ? "trade-action-expanded" : "trade-action";
+
+          return (
+            <div className="trade-entry" key={index}>
+              <div className="trade-time">{entry.time}</div>
+              {entry.swapmode ? (
+                <div className={actionClass}>
+                  <span>[{message}]</span>
+                  <span>At {`${actualPrice}(${changedPrice})`}, Swapped {changedUsdt} USDT to {changedSol} SOL</span>
+                  <span>New balance: {solBalance}({changedSol}) SOL</span>
+                  <span>{usdtBalance} USDT</span>
+                  <span>total: {total}, fee: {fee}</span>
+                </div>
+              ) : (
+                <div className={actionClass}>
+                  <span>[{message}]</span>
+                  <span>At {`${actualPrice}(${changedPrice})`}, Swapped {changedSol} SOL to {changedUsdt} USDT</span>
+                  <span>New balance: {solBalance} SOL</span>
+                  <span>{usdtBalance}({changedUsdt}) USDT</span>
+                  <span>total: {total}, fee: {fee}</span>
+                </div>
+              )}
+            </div>
+          );
+        })}
         {filteredHistories.length === 0 && (
           <div className="empty-state" style={{ marginTop: 8 }}>
             No trades match “{searchQuery}”.
